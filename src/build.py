@@ -94,7 +94,9 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None, her
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <meta property="og:type" content="website"><meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}"><meta property="og:url" content="{url}"><meta property="og:site_name" content="{SITE}">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{BASE}/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KidAccountMath: free Trump Account calculator. See what your child could have at 18.">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{BASE}/assets/og.png">
 {VERIFY_META}<link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
 <link rel="stylesheet" href="/assets/style.css">
 <!-- AdSense: paste the <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX"> tag here after approval -->
@@ -166,6 +168,13 @@ CALC_FORM = """
   <button type="button" data-fam="0">$0</button><button type="button" data-fam="120">$10/mo</button><button type="button" data-fam="300">$25/mo</button><button type="button" data-fam="600">$50/mo</button><button type="button" data-fam="1200">$100/mo</button></div>
  <label class="chk"><input type="checkbox" id="seed" checked> Include the free $1,000 (U.S. citizen born 2025–2028)</label>
  <div id="out" class="out" aria-live="polite"><noscript>The calculator needs JavaScript. See the table of examples below.</noscript></div>
+ <section id="share" class="share" hidden aria-labelledby="shh"><h3 id="shh">Share your child's number</h3>
+  <p class="small">Send this picture to your partner or family. The link opens the calculator with these same numbers. Nothing you type leaves your device.</p>
+  <img id="shimg" class="shimg" alt="Picture card showing your child's estimated Trump Account value" width="1080" height="1350" hidden>
+  <div class="shbtns"><button type="button" class="btn" id="shdl">Download image</button><button type="button" class="btn alt" id="shnat" hidden>Share…</button></div>
+  <div class="shlinks"><a id="shfb" href="#" target="_blank" rel="noopener">Facebook</a><a id="shsms" href="#">Text message</a><a id="shwa" href="#" target="_blank" rel="noopener">WhatsApp</a><button type="button" id="shcopy">Copy link</button></div>
+  <label class="shurl" for="shurl">Link to these numbers <input id="shurl" readonly></label>
+ </section>
  <details class="adv"><summary>Advanced options</summary><div class="grid">
   <label for="emp">Employer adds per year ($, max 2,500) <input type="number" id="emp" min="0" max="2500" step="50" value="0"></label>
   <label for="fee">Fund fee (%, legal max 0.10) <input type="number" id="fee" min="0" max="0.1" step="0.01" value="0.03"></label>
@@ -178,7 +187,7 @@ CALC_FORM = """
  </details>
 </form>
 <details><summary>Year-by-year table</summary><div id="yy"></div></details>
-<script src="/assets/calc.js" defer></script>
+<script src="/assets/share.js" defer></script><script src="/assets/calc.js" defer></script>
 """
 
 # ---------- pages ----------
@@ -468,6 +477,8 @@ shutil.copy(ROOT / "src" / "style.css", A / "style.css")
 shutil.copy(ROOT / "src" / "calc.js", A / "calc.js")
 shutil.copy(ROOT / "src" / "elig.js", A / "elig.js")
 shutil.copy(ROOT / "src" / "quick.js", A / "quick.js")
+shutil.copy(ROOT / "src" / "share.js", A / "share.js")
+shutil.copy(ROOT / "src" / "og.png", A / "og.png")  # made by src/make_og.py (Pillow); committed so the build needs no extra deps
 
 # 404
 (OUT / "404.html").write_text(f'<!doctype html><html lang=en><meta charset=utf-8><title>Not found – {SITE}</title><link rel=stylesheet href=/assets/style.css><main><h1>Page not found</h1><p><a href="/">Go to the Trump Account calculator</a></p></main></html>')
