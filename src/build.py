@@ -499,6 +499,9 @@ full = f"# {SITE} – full text\n\nSource: {BASE}/ · Updated {UPDATED}\n\n" + "
 # IndexNow key file
 (OUT / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
 # Netlify/Cloudflare Pages style headers (harmless elsewhere)
+# static root files (verification etc.), not in sitemap
+for f in (ROOT / "src" / "static").iterdir():
+    shutil.copy(f, OUT / f.name)
 (OUT / ".nojekyll").write_text("")
 (OUT / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/llms*.txt\n  Content-Type: text/plain; charset=utf-8\n")
 print(f"Built {len(PAGES)} pages to {OUT} for {BASE}")
