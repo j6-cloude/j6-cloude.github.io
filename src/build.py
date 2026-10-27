@@ -55,6 +55,7 @@ def faq_html(faqs):
     return out + "</section>"
 
 def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
+    body = body.replace("@@DELLFACT@@", DELL_FACT).replace("@@DELLCITE@@", DELL_CITE)
     url = BASE + path
     graph = [ORG, {"@type": "WebSite", "@id": BASE + "/#site", "url": BASE + "/", "name": SITE, "publisher": {"@id": BASE + "/#org"}},
              {"@type": "WebPage", "@id": url, "url": url, "name": title, "description": desc, "dateModified": UPDATED,
@@ -112,7 +113,14 @@ IRSFAQ = ("IRS: Trump Accounts – Frequently asked questions", "https://www.irs
 I4547 = ("IRS: Instructions for Form 4547", "https://www.irs.gov/instructions/i4547")
 USC = ("26 U.S.C. § 530A (statute text)", "https://uscode.house.gov/us/usc/119-124/t26/s530A/")
 GOV = ("trumpaccounts.gov (official program site)", "https://trumpaccounts.gov/")
-DELL = ("Invest America: Dell $250 eligibility", "https://investamerica.org/check-dell-250-eligibility/")
+DELL = ("Invest America: Dell $250 eligibility (figures as of Oct 9, 2026)", "https://investamerica.org/check-dell-250-eligibility/")
+DELL2 = ("Michael & Susan Dell: $250 contribution", "https://www.onedell.com/25-million-children-trump-accounts-dell-contribution/")
+DELL_FACT = ('The Dell $250 went to eligible children born Jan 1, 2016 – Dec 31, 2024 living in ZIP codes with a median family income of '
+             '$117,300 or less (U.S. Census 2020–2024 ACS), plus all eligible children on military bases; all deposits were made by October 9, 2026. '
+             'It was automatic. Some children in higher-income ZIPs also got it because their families enrolled before auto-enrollment began; '
+             'funds are reserved for children in foster care, expected next year.')
+DELL_CITE = (' <span class=small>(Source: <a href="https://investamerica.org/check-dell-250-eligibility/" rel="noopener">Invest America</a>, '
+             'figures as of Oct 9, 2026; verified Oct 27, 2026.)</span>')
 IRSNEWS = ("IRS/Treasury guidance news release", "https://www.irs.gov/newsroom/treasury-irs-issue-guidance-on-trump-accounts-established-under-the-working-families-tax-cuts-notice-announces-upcoming-regulations")
 
 def table(rows, head):
@@ -143,7 +151,7 @@ CALC_FORM = """
   <label>Inflation for "today's dollars" (%) <input type="number" id="inf" min="0" max="10" step="0.5" value="2.5"></label>
  </div>
  <label class="chk"><input type="checkbox" id="seed" checked> Gets the $1,000 Treasury seed (U.S. citizen born 2025–2028, election made)</label>
- <label class="chk"><input type="checkbox" id="dell"> Got the Dell $250 deposit (born 2016–2024, qualifying ZIP)</label>
+ <label class="chk"><input type="checkbox" id="dell"> Got the Dell $250 deposit (born 2016–2024, ZIP median family income ≤ $117,300 or military base; deposited by Oct 9, 2026)</label>
  <label class="chk"><input type="checkbox" id="pen" checked> Apply 10% early-withdrawal penalty if withdrawn before 59½ (education/first-home exceptions may apply)</label>
 </form>
 <div id="out" class="out" aria-live="polite"></div>
@@ -190,6 +198,7 @@ calc_body = f"""
 {CALC_FORM}
 <h2>How the calculation works</h2>
 <p>Each year until the child turns 18: <code>balance = (balance + family + employer) × (1 + return − fee)</code>. From 18 onward no new Trump Account contributions are modeled and the balance compounds alone. The starting balance includes the $1,000 Treasury seed and/or the Dell $250 deposit if ticked.</p>
+<p><strong>Dell $250:</strong> @@DELLFACT@@@@DELLCITE@@</p>
 <p><strong>After-tax estimate.</strong> A Trump Account becomes a traditional-IRA-style account. Family contributions are after-tax money and create <em>basis</em>, which is not taxed again. The seed, the Dell gift, employer money and all growth are taxed as ordinary income when withdrawn. The calculator applies your chosen tax rate to that taxable part and, if ticked, a 10% penalty for withdrawals before 59½. This is a simplification; real taxes depend on the year, state and exceptions.</p>
 <h2>Example: newborn, $1,000 a year, 7% return</h2>
 {table([(r[0], money(r[1]), money(r[2])) for r in rows if r[0] in (1,5,10,15,18)], ["Age", "Contribution that year", "Balance"])}
@@ -222,7 +231,7 @@ elig_body = """
 <table><thead><tr><th>Benefit</th><th>Who qualifies</th><th>How to get it</th></tr></thead><tbody>
 <tr><td>Trump Account</td><td>Any child with a valid SSN who will not turn 18 before the end of the year the account is established</td><td>Treasury auto-enrolled eligible children from Oct 1, 2026; claim it in the Trump Accounts app/website. Otherwise file Form 4547.</td></tr>
 <tr><td>$1,000 Treasury seed</td><td>U.S. citizens born Jan 1, 2025 – Dec 31, 2028 with a valid SSN</td><td>Must be elected on Form 4547 (app, website, or IRS Online Account), even if the account was auto-opened</td></tr>
-<tr><td>Dell $250</td><td>Children born 2016–2024 in ZIP codes with median family income of about $117,300 or less, plus children on military bases</td><td>Automatic; no application. Check the ZIP on Invest America's lookup</td></tr>
+<tr><td>Dell $250</td><td>Children born Jan 1, 2016 – Dec 31, 2024 in ZIP codes with median family income of $117,300 or less, plus all eligible children on military bases. All deposits made by Oct 9, 2026.@@DELLCITE@@</td><td>Automatic; no application. Check the ZIP on Invest America's lookup</td></tr>
 </tbody></table>
 <noscript><p>The checker needs JavaScript; the table above contains the same rules.</p></noscript>
 """
@@ -232,9 +241,9 @@ page("/trump-account-eligibility-checker/", "Trump Account Eligibility Checker: 
      ld={"@type": "WebApplication", "name": "Trump Account Eligibility Checker", "url": BASE + "/trump-account-eligibility-checker/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}},
      faqs=[("Is my child born in 2024 eligible for the $1,000?", "No. The $1,000 seed is only for U.S. citizens born from January 1, 2025 through December 31, 2028. A 2024 child can still have a Trump Account and may get the Dell $250 if the ZIP code qualifies."),
            ("Do non-citizen children qualify?", "A child with a valid SSN can have a Trump Account. The $1,000 seed requires U.S. citizenship."),
-           ("Do I need to apply for the Dell $250?", "No. According to Michael & Susan Dell's announcement, eligible children receive it automatically. The income threshold was set at a ZIP-code median family income of about $117,300 (as of Oct 9, 2026)."),
+           ("Do I need to apply for the Dell $250?", "No. " + DELL_FACT + " Source: Invest America (investamerica.org), figures as of Oct 9, 2026."),
            ("My child was auto-enrolled. Do I still need Form 4547?", "Not to open the account, but yes to request the $1,000 seed if your child qualifies, and you must claim the account to manage it.")],
-     sources=[IRS, IRSFAQ, DELL, ("Michael & Susan Dell: $250 contribution", "https://www.onedell.com/25-million-children-trump-accounts-dell-contribution/")])
+     sources=[IRS, IRSFAQ, DELL, DELL2])
 
 # vs 529
 v529 = """
@@ -345,7 +354,7 @@ chk = """
 <li>Verify your identity and your authority over the child.</li>
 <li>Enter the child's legal name, SSN and date of birth exactly as on Social Security records. If an account exists, you will be able to claim and activate it.</li>
 <li>Born 2025–2028? Separately elect the $1,000 seed (Form 4547) — auto-enrollment does not elect it for you.</li>
-<li>Born 2016–2024? Check whether the Dell $250 was deposited (see the <a href="/trump-account-eligibility-checker/">eligibility checker</a>).</li></ol>
+<li>Born 2016–2024? Check whether the Dell $250 was deposited: it went automatically to kids in ZIP codes with median family income ≤ $117,300 or on military bases, all by Oct 9, 2026 (see the <a href="/trump-account-eligibility-checker/">eligibility checker</a>).@@DELLCITE@@</li></ol>
 <h2>Is the Trump Account app legit?</h2>
 <p>The IRS's own Trump Accounts page tells parents to download the Trump Accounts app from the Apple App Store or Google Play to claim an account, and its FAQ names BNY as Treasury's financial agent and Robinhood Securities as brokerage provider and initial trustee. So the official app is real — but scammers imitate it. Safe habits:</p>
 <ul><li>Start from irs.gov/trumpaccounts or trumpaccounts.gov, not from a text, email or ad link.</li>
@@ -359,7 +368,7 @@ page("/does-my-child-have-a-trump-account/", "How Do I Know If My Child Has a Tr
            ("Is the Trump Account app legit?", "Yes, the IRS directs parents to the Trump Accounts app on the Apple App Store and Google Play. Reach it from irs.gov/trumpaccounts or trumpaccounts.gov to avoid imitations."),
            ("Does auto-enrollment include the $1,000?", "No. You must still elect the $1,000 pilot contribution on Form 4547 if your child qualifies."),
            ("Do I have to put money in?", "No. Contributions are optional; the account can hold just the seed or Dell gift.")],
-     sources=[IRS, IRSFAQ, GOV])
+     sources=[IRS, IRSFAQ, GOV, DELL])
 
 rules = """
 <p class="lead">All the key Trump Account numbers in one place, with links to the IRS and statute.</p>
@@ -376,6 +385,7 @@ rules = """
 <tr><td>Withdrawals</td><td>Generally none before Jan 1 of the year the child turns 18 (exceptions: full rollover, certain ABLE rollovers, death); then traditional IRA rules</td></tr>
 <tr><td>Tax deduction for contributions</td><td>None during the growth period</td></tr>
 <tr><td>Basis</td><td>Family/other contributions create basis (not taxed again); seed, charity, employer money and growth are taxable when withdrawn</td></tr>
+<tr><td>Dell $250 (private gift, not part of the law)</td><td>Born 2016–2024, ZIP median family income ≤ $117,300 or on a military base; automatic; all deposited by Oct 9, 2026@@DELLCITE@@</td></tr>
 <tr><td>Program operators</td><td>BNY (financial agent), Robinhood Securities (brokerage/initial trustee), per IRS FAQ</td></tr>
 </tbody></table>
 """
@@ -385,7 +395,7 @@ page("/trump-account-rules/", "Trump Account Rules 2026: Limits, Investments, Wi
      faqs=[("Can a Trump Account invest in individual stocks or crypto?", "No. During the growth period it can only hold eligible mutual funds or ETFs tracking a broad U.S. equity index, with no leverage and fees of 0.10% or less."),
            ("Do contributions to a Trump Account reduce my taxes?", "No federal deduction is allowed for contributions before the year the child turns 18. Employer contributions up to $2,500 are excluded from the employee's income."),
            ("What happens at 18?", "The account generally becomes subject to traditional IRA rules and belongs to the child.")],
-     sources=[USC, I4547, IRSNEWS, IRSFAQ])
+     sources=[USC, I4547, IRSNEWS, IRSFAQ, DELL])
 
 # trust pages
 page("/about/", f"About {SITE}", f"Who runs {SITE}, how the calculators work, and how we source Trump Account information.",
@@ -427,7 +437,7 @@ sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps
 desc = {p: d for p, t, d, _ in PAGES}
 core = [p for p, *_ in PAGES if p not in ("/about/", "/contact/", "/privacy/", "/disclaimer/")]
 llms = f"# {SITE}\n\n> {TAGLINE}. Independent, free, no sign-up. Every rule links to IRS/Treasury primary sources. Last updated {UPDATED}.\n\n" \
-       f"Author: {AUTHOR} ({BASE}/about/). Contact: {CONTACT_EMAIL}. Not affiliated with the IRS or Treasury.\n\nKey facts: {strip(DEF)}\n\n## Tools and guides\n\n" + \
+       f"Author: {AUTHOR} ({BASE}/about/). Contact: {CONTACT_EMAIL}. Not affiliated with the IRS or Treasury.\n\nKey facts: {strip(DEF)}\n\nDell $250: {DELL_FACT} Source: {DELL[1]} (figures as of Oct 9, 2026; verified {UPDATED_H}).\n\n## Tools and guides\n\n" + \
        "".join(f"- [{t}]({BASE}{p}): {d}\n" for p, t, d, _ in PAGES if p in core) + \
        "\n## About\n\n" + "".join(f"- [{t}]({BASE}{p}): {d}\n" for p, t, d, _ in PAGES if p not in core) + \
        f"\n## Optional\n\n- [Full text of all pages]({BASE}/llms-full.txt)\n"
