@@ -6,6 +6,8 @@ Author: j6 (https://j6-cloude.github.io/about/). Contact: liu04731@gmail.com. No
 
 Key facts: A Trump Account is a tax-advantaged investment account for U.S. children created by the 2025 tax law (Internal Revenue Code section 530A). It is legally a type of traditional IRA for a child under 18. Family and others can add up to $5,000 a year (employers up to $2,500 of that), the money must sit in low-cost U.S. stock index funds (fees of 0.10% or less), and it generally cannot be withdrawn until the year the child turns 18. Children born 2025–2028 who are U.S. citizens can get a one-time $1,000 from the Treasury.
 
+Dell $250: The Dell $250 went to eligible children born Jan 1, 2016 – Dec 31, 2024 living in ZIP codes with a median family income of $117,300 or less (U.S. Census 2020–2024 ACS), plus all eligible children on military bases; all deposits were made by October 9, 2026. It was automatic. Some children in higher-income ZIPs also got it because their families enrolled before auto-enrollment began; funds are reserved for children in foster care, expected next year. Source: https://investamerica.org/check-dell-250-eligibility/ (figures as of Oct 9, 2026; verified October 27, 2026).
+
 ## Tools and guides
 
 - [Trump Account Calculator 2026 – Seed, $5,000 Limit & After-Tax Value](https://j6-cloude.github.io/): Free Trump Account calculator: project a child's 530A account from the $1,000 seed and yearly deposits, see after-tax value, and compare with a 529.
