@@ -13,6 +13,11 @@ AUTHOR = os.environ.get("AUTHOR_NAME", "j6")
 CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "liu04731@gmail.com")
 UPDATED = "2026-10-27"
 UPDATED_H = "October 27, 2026"
+# Search-engine verification: set env vars (just the content= value) and rebuild
+GOOGLE_VERIFY = os.environ.get("GOOGLE_SITE_VERIFICATION", "")
+BING_VERIFY = os.environ.get("BING_SITE_VERIFICATION", "")
+VERIFY_META = (f'<meta name="google-site-verification" content="{GOOGLE_VERIFY}">\n' if GOOGLE_VERIFY else "") + \
+              (f'<meta name="msvalidate.01" content="{BING_VERIFY}">\n' if BING_VERIFY else "")
 INDEXNOW_KEY = (ROOT / ".indexnow_key").read_text().strip()
 
 # ---------- calculator (mirrors assets/calc.js) ----------
@@ -73,7 +78,7 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
 <meta property="og:type" content="website"><meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}"><meta property="og:url" content="{url}"><meta property="og:site_name" content="{SITE}">
 <meta name="twitter:card" content="summary">
-<link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+{VERIFY_META}<link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
 <link rel="stylesheet" href="/assets/style.css">
 <!-- AdSense: paste the <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX"> tag here after approval -->
 <script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)}</script>
@@ -434,5 +439,6 @@ full = f"# {SITE} – full text\n\nSource: {BASE}/ · Updated {UPDATED}\n\n" + "
 # IndexNow key file
 (OUT / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
 # Netlify/Cloudflare Pages style headers (harmless elsewhere)
+(OUT / ".nojekyll").write_text("")
 (OUT / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/llms*.txt\n  Content-Type: text/plain; charset=utf-8\n")
 print(f"Built {len(PAGES)} pages to {OUT} for {BASE}")
