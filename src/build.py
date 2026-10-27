@@ -487,7 +487,7 @@ shutil.copy(ROOT / "src" / "og.png", A / "og.png")  # made by src/make_og.py (Pi
 bots = ["Googlebot", "Bingbot", "GPTBot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Perplexity-User", "ClaudeBot", "Claude-User", "Claude-SearchBot",
         "Google-Extended", "Applebot", "Applebot-Extended", "CCBot", "DuckDuckBot", "Amazonbot", "meta-externalagent", "MistralAI-User"]
 robots = "".join(f"User-agent: {b}\nAllow: /\n\n" for b in bots) + f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n"
-EXTRA_SITEMAPS = ["https://j6-cloude.github.io/heat-pump-savings/sitemap.xml"]  # other sites on this domain (verified 200)
+EXTRA_SITEMAPS = ["https://j6-cloude.github.io/heat-pump-savings/sitemap.xml", "https://j6-cloude.github.io/ai-ipo-guide/sitemap.xml"]  # other sites on this domain (verified 200)
 robots += "".join(f"Sitemap: {u}\n" for u in EXTRA_SITEMAPS)
 (OUT / "robots.txt").write_text(robots)
 
