@@ -1,6 +1,6 @@
 # KidAccountMath – Trump Account calculator site (static)
 
-Build:  BASE_URL=https://YOURDOMAIN python3 src/build.py   # outputs ./public
+Build:  BASE_URL=https://USERNAME.github.io python3 src/build.py   # or https://yourdomain.com (root only, no subpath); outputs ./public
 Local:  cd public && python3 -m http.server 8765
 Deploy: upload ./public to any static host (Cloudflare Pages / Netlify / GitHub Pages / Vercel).
 After live: BASE_URL=https://YOURDOMAIN ./indexnow_ping.sh

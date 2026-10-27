@@ -9,7 +9,7 @@ OUT = ROOT / "public"
 BASE = os.environ.get("BASE_URL", "https://example.com").rstrip("/")
 SITE = "KidAccountMath"
 TAGLINE = "Free Trump Account (Section 530A) calculators and plain-English guides"
-AUTHOR = os.environ.get("AUTHOR_NAME", "KidAccountMath Editorial")   # set a real name before launch
+AUTHOR = os.environ.get("AUTHOR_NAME", "j6")
 CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "contact@example.com")  # replace before launch
 UPDATED = "2026-10-27"
 UPDATED_H = "October 27, 2026"
@@ -53,7 +53,7 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
     url = BASE + path
     graph = [ORG, {"@type": "WebSite", "@id": BASE + "/#site", "url": BASE + "/", "name": SITE, "publisher": {"@id": BASE + "/#org"}},
              {"@type": "WebPage", "@id": url, "url": url, "name": title, "description": desc, "dateModified": UPDATED,
-              "isPartOf": {"@id": BASE + "/#site"}, "author": {"@type": "Person" if AUTHOR != SITE + " Editorial" else "Organization", "name": AUTHOR}}]
+              "isPartOf": {"@id": BASE + "/#site"}, "author": {"@type": "Person", "name": AUTHOR, "url": BASE + "/about/"}}]
     if path != "/":
         crumbs = [{"@type": "ListItem", "position": 1, "name": "Home", "item": BASE + "/"},
                   {"@type": "ListItem", "position": 2, "name": h1 or title, "item": url}]
@@ -81,7 +81,7 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
 <header><a class="brand" href="/">{SITE}</a><nav>{nav}</nav></header>
 <main>
 <h1>{h1 or title}</h1>
-<p class="meta">By <a href="/about/">{AUTHOR}</a> · Updated <time datetime="{UPDATED}">{UPDATED_H}</time> · Based on IRS/Treasury guidance · Not tax advice</p>
+<p class="meta">Written by <a href="/about/">{AUTHOR}</a> · Updated <time datetime="{UPDATED}">{UPDATED_H}</time> · Based on IRS/Treasury guidance · Not tax advice</p>
 {body}
 <div class="ad-slot" data-ad-slot="bottom" aria-hidden="true"></div>
 </main>
@@ -386,7 +386,7 @@ page("/trump-account-rules/", "Trump Account Rules 2026: Limits, Investments, Wi
 page("/about/", f"About {SITE}", f"Who runs {SITE}, how the calculators work, and how we source Trump Account information.",
      f"""<p>{SITE} publishes free calculators and plain-English explanations of Trump Accounts (Internal Revenue Code § 530A). Every rule we state links to a primary source: the IRS, the statute, Treasury/IRS guidance or the program operators.</p>
 <h2>Editorial policy</h2><ul><li>Primary sources first; each page lists its sources and its last-updated date.</li><li>Calculators show their formula and assumptions. Projections are illustrations, not forecasts.</li><li>No paid placements inside answers. If we ever use affiliate links, they will be labeled.</li><li>Corrections: email <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>; we fix verified errors promptly and update the date.</li></ul>
-<h2>Author</h2><p>{AUTHOR}. Finance graduate-level training; not a CPA, attorney or registered investment adviser. Nothing here is personalized tax, legal or investment advice.</p>""", h1=f"About {SITE}")
+<h2>Author</h2><p>Written by {AUTHOR}. Finance graduate-level training; not a CPA, attorney or registered investment adviser. Nothing here is personalized tax, legal or investment advice.</p>""", h1=f"About {SITE}")
 page("/contact/", f"Contact {SITE}", f"How to contact {SITE} with corrections or questions.",
      f"<p>Email: <a href=\"mailto:{CONTACT_EMAIL}\">{CONTACT_EMAIL}</a></p><p>We can't give individual tax advice or help access anyone's account. For account help use the official line 866-USA-4547 or trumpaccounts.gov. Never send us SSNs or account numbers.</p>", h1="Contact")
 page("/privacy/", "Privacy Policy", f"{SITE} privacy policy: calculators run in your browser; cookies and advertising disclosures.",
@@ -422,7 +422,7 @@ sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps
 desc = {p: d for p, t, d, _ in PAGES}
 core = [p for p, *_ in PAGES if p not in ("/about/", "/contact/", "/privacy/", "/disclaimer/")]
 llms = f"# {SITE}\n\n> {TAGLINE}. Independent, free, no sign-up. Every rule links to IRS/Treasury primary sources. Last updated {UPDATED}.\n\n" \
-       f"Key facts: {strip(DEF)}\n\n## Tools and guides\n\n" + \
+       f"Author: {AUTHOR} ({BASE}/about/). Not affiliated with the IRS or Treasury.\n\nKey facts: {strip(DEF)}\n\n## Tools and guides\n\n" + \
        "".join(f"- [{t}]({BASE}{p}): {d}\n" for p, t, d, _ in PAGES if p in core) + \
        "\n## About\n\n" + "".join(f"- [{t}]({BASE}{p}): {d}\n" for p, t, d, _ in PAGES if p not in core) + \
        f"\n## Optional\n\n- [Full text of all pages]({BASE}/llms-full.txt)\n"
