@@ -35,8 +35,22 @@ def project(age_now=0, seed=True, dell=False, family=1000, employer=0, ret=0.07,
 def money(x): return "${:,.0f}".format(x)
 
 # ---------- layout ----------
-NAV = [("/", "Home"), ("/trump-account-calculator/", "Calculator"), ("/trump-account-eligibility-checker/", "Eligibility"),
-       ("/trump-account-vs-529/", "vs 529"), ("/does-my-child-have-a-trump-account/", "Check my child"), ("/how-to-claim-trump-account/", "How to claim"), ("/trump-account-rules/", "Rules")]
+NAV = [("/trump-account-eligibility-checker/", "Check eligibility"), ("/trump-account-calculator/", "Calculator"),
+       ("/how-to-claim-trump-account/", "How to claim"), ("/trump-account-vs-529/", "vs 529"), ("/trump-account-rules/", "Rules")]
+OFFICIAL = "https://trumpaccounts.gov/"
+LOGO = '<svg class="logo" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#c4512b"/><path d="M8 22l5-5 4 3 7-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+# (href, button text, why) -- the one next action at the end of each page
+NEXT = {
+ "/": ("/trump-account-eligibility-checker/", "Check if my child qualifies", "Takes 30 seconds. Covers the account, the $1,000 and the Dell $250."),
+ "/trump-account-eligibility-checker/": ("/trump-account-calculator/", "See how much it could grow", "Try $0, $10 or $25 a month and see the total at 18."),
+ "/trump-account-calculator/": ("/how-to-claim-trump-account/", "How to claim it (free)", "Step by step, using the official app. No fees."),
+ "/how-to-claim-trump-account/": ("/does-my-child-have-a-trump-account/", "Check if the account is already open", "How to look it up and spot fake apps and texts."),
+ "/does-my-child-have-a-trump-account/": ("/how-to-claim-trump-account/", "Claim the account", "The steps, in order, in the official app."),
+ "/form-4547-cp318-notice/": ("/how-to-claim-trump-account/", "Go back to the claim steps", "Fix the details, then resubmit Form 4547."),
+ "/trump-account-rules/": ("/trump-account-eligibility-checker/", "Check if my child qualifies", "Turn the rules into a yes or no for your child."),
+ "/trump-account-vs-529/": ("/trump-account-calculator/", "Run your own numbers", "See the value at 18 and what you keep after tax."),
+ "/trump-account-vs-custodial-roth-ira/": ("/trump-account-calculator/", "Run your own numbers", "See the value at 18 and what you keep after tax."),
+}
 
 ORG = {"@type": "Organization", "@id": BASE + "/#org", "name": SITE, "url": BASE + "/",
        "description": TAGLINE, "email": CONTACT_EMAIL}
@@ -54,7 +68,7 @@ def faq_html(faqs):
         out += f'<h3>{q}</h3><p>{a}</p>'
     return out + "</section>"
 
-def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
+def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None, hero=None):
     body = body.replace("@@DELLFACT@@", DELL_FACT).replace("@@DELLCITE@@", DELL_CITE)
     url = BASE + path
     graph = [ORG, {"@type": "WebSite", "@id": BASE + "/#site", "url": BASE + "/", "name": SITE, "publisher": {"@id": BASE + "/#org"}},
@@ -68,6 +82,8 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
     if faqs: graph.append(faq_ld(faqs)); body += faq_html(faqs)
     if sources:
         body += '<section class="sources"><h2>Sources</h2><ul>' + "".join(f'<li><a href="{u}" rel="noopener">{t}</a></li>' for t, u in sources) + "</ul></section>"
+    nx = NEXT.get(path, ("/trump-account-eligibility-checker/", "Check if my child qualifies", "Takes 30 seconds."))
+    body += f'<aside class="next" aria-label="Next step"><div class="lbl">Next step</div><a class="btn" href="{nx[0]}">{nx[1]} <span aria-hidden="true">&rarr;</span></a><p>{nx[2]}</p></aside>'
     nav = "".join(f'<a href="{h}"{" aria-current=page" if h == path else ""}>{t}</a>' for h, t in NAV)
     doc = f"""<!doctype html>
 <html lang="en"><head>
@@ -84,10 +100,11 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
 <!-- AdSense: paste the <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX"> tag here after approval -->
 <script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)}</script>
 </head><body>
-<header><a class="brand" href="/">{SITE}</a><nav>{nav}</nav></header>
+<header><a class="brand" href="/">{LOGO}<span>{SITE}</span></a><nav aria-label="Main">{nav}</nav></header>
+<p class="indep">Independent free tool by <a href="/about/">{AUTHOR}</a> — not affiliated with the IRS, Treasury, or trumpaccounts.gov. Official site: <a href="{OFFICIAL}" rel="noopener">trumpaccounts.gov</a></p>
 <main>
-<h1>{h1 or title}</h1>
-<p class="meta">Written by <a href="/about/">{AUTHOR}</a> · Updated <time datetime="{UPDATED}">{UPDATED_H}</time> · Based on IRS/Treasury guidance · Not tax advice</p>
+{hero or f'<h1>{h1 or title}</h1>'}
+<p class="meta">By <a href="/about/">{AUTHOR}</a> · Updated <time datetime="{UPDATED}">{UPDATED_H}</time> · Facts from IRS and Treasury sources (listed below) · Not tax advice</p>
 {body}
 <div class="ad-slot" data-ad-slot="bottom" aria-hidden="true"></div>
 </main>
@@ -102,10 +119,10 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None):
 PAGES = []
 
 # ---------- shared content ----------
-DEF = ("A <strong>Trump Account</strong> is a tax-advantaged investment account for U.S. children created by the 2025 tax law "
-       "(Internal Revenue Code section 530A). It is legally a type of traditional IRA for a child under 18. Family and others can add up to "
-       "<strong>$5,000 a year</strong> (employers up to $2,500 of that), the money must sit in low-cost U.S. stock index funds (fees of 0.10% or less), "
-       "and it generally cannot be withdrawn until the year the child turns 18. Children born 2025–2028 who are U.S. citizens can get a one-time "
+DEF = ("A <strong>Trump Account</strong> is an investing account for a U.S. child. A 2025 law created it (tax code section 530A). "
+       "It works like a traditional IRA (a retirement account with tax rules) for a child under 18. Family and others can add up to "
+       "<strong>$5,000 a year</strong>. Employers can give up to $2,500 of that. The money goes into low-cost U.S. stock index funds, with fees of 0.10% or less. "
+       "In general, no one can take money out until the year the child turns 18. Children born 2025 to 2028 who are U.S. citizens can get a one-time "
        "<strong>$1,000</strong> from the Treasury.")
 
 IRS = ("IRS: Trump Accounts", "https://www.irs.gov/trumpaccounts")
@@ -130,60 +147,83 @@ def table(rows, head):
 # quick-answer table used on several pages (7% gross, 0.03% fee)
 def scenario_rows():
     out = []
-    for fam in (0, 600, 1200, 2500, 5000):
+    for fam in (0, 120, 300, 600, 1200, 5000):
         b18, contrib, basis, _ = project(0, True, False, fam, 0, 0.07, 0.0003, 18)
         b30, *_ = project(0, True, False, fam, 0, 0.07, 0.0003, 30)
-        out.append(("Seed only" if fam == 0 else money(fam) + "/yr", money(contrib), money(b18), money(b30)))
+        out.append(("$0 (seed only)" if fam == 0 else (f"{money(fam/12)}/month" if fam < 5000 else "$5,000/yr (max)"), money(contrib), money(b18), money(b30)))
     return out
 SCEN = table(scenario_rows(), ["Family adds", "Total put in by 18", "Value at 18", "Value at 30 (no more deposits)"])
 SCEN_NOTE = "<p class=small>Assumes a newborn who gets the $1,000 Treasury seed, deposits at the start of each year until age 17, a 7% annual return before a 0.03% fund fee, no withdrawals, nominal dollars (not inflation-adjusted), and the $5,000 limit held flat. Returns are not guaranteed; stock index funds can lose money in any year.</p>"
 
 CALC_FORM = """
-<form id="calc" class="calc" onsubmit="return false">
+<form id="calc" class="calc card" onsubmit="return false">
  <div class="grid">
-  <label>Child's age today <input type="number" id="age" min="0" max="17" value="0"></label>
-  <label>Annual family contribution ($) <input type="number" id="fam" min="0" max="5000" step="50" value="1000"></label>
-  <label>Annual employer contribution ($, max 2,500) <input type="number" id="emp" min="0" max="2500" step="50" value="0"></label>
-  <label>Expected annual return (%) <input type="number" id="ret" min="-5" max="15" step="0.5" value="7"></label>
-  <label>Fund expense ratio (%, legal max 0.10) <input type="number" id="fee" min="0" max="0.1" step="0.01" value="0.03"></label>
-  <label>Project to age <input type="number" id="to" min="18" max="65" value="18"></label>
-  <label>Your expected tax rate when withdrawn (%) <input type="number" id="tax" min="0" max="50" step="1" value="12"></label>
-  <label>Inflation for "today's dollars" (%) <input type="number" id="inf" min="0" max="10" step="0.5" value="2.5"></label>
+  <label for="age">Child's age today <input type="number" inputmode="numeric" id="age" min="0" max="17" value="0"></label>
+  <label for="fam">Family adds per year ($) <input type="number" inputmode="numeric" id="fam" min="0" max="5000" step="10" value="1000"></label>
+  <label for="ret">Yearly return (%) <input type="number" inputmode="decimal" id="ret" min="-5" max="15" step="0.5" value="7"></label>
  </div>
- <label class="chk"><input type="checkbox" id="seed" checked> Gets the $1,000 Treasury seed (U.S. citizen born 2025–2028, election made)</label>
- <label class="chk"><input type="checkbox" id="dell"> Got the Dell $250 deposit (born 2016–2024, ZIP median family income ≤ $117,300 or military base; deposited by Oct 9, 2026)</label>
- <label class="chk"><input type="checkbox" id="pen" checked> Apply 10% early-withdrawal penalty if withdrawn before 59½ (education/first-home exceptions may apply)</label>
+ <div class="presets" role="group" aria-label="Quick amounts"><span>Quick picks:</span>
+  <button type="button" data-fam="0">$0</button><button type="button" data-fam="120">$10/mo</button><button type="button" data-fam="300">$25/mo</button><button type="button" data-fam="600">$50/mo</button><button type="button" data-fam="1200">$100/mo</button></div>
+ <label class="chk"><input type="checkbox" id="seed" checked> Include the free $1,000 (U.S. citizen born 2025–2028)</label>
+ <div id="out" class="out" aria-live="polite"><noscript>The calculator needs JavaScript. See the table of examples below.</noscript></div>
+ <details class="adv"><summary>Advanced options</summary><div class="grid">
+  <label for="emp">Employer adds per year ($, max 2,500) <input type="number" id="emp" min="0" max="2500" step="50" value="0"></label>
+  <label for="fee">Fund fee (%, legal max 0.10) <input type="number" id="fee" min="0" max="0.1" step="0.01" value="0.03"></label>
+  <label for="to">Show value at age <input type="number" id="to" min="18" max="65" value="18"></label>
+  <label for="tax">Tax rate when taken out (%) <input type="number" id="tax" min="0" max="50" step="1" value="12"></label>
+  <label for="inf">Inflation for "today's dollars" (%) <input type="number" id="inf" min="0" max="10" step="0.5" value="2.5"></label>
+ </div>
+ <label class="chk"><input type="checkbox" id="dell"> Got the Dell $250 (born 2016–2024, ZIP median family income ≤ $117,300 or military base; deposited by Oct 9, 2026)</label>
+ <label class="chk"><input type="checkbox" id="pen" checked> Add the 10% early-withdrawal penalty if taken out before 59½ (some school and first-home uses are exempt)</label>
+ </details>
 </form>
-<div id="out" class="out" aria-live="polite"></div>
 <details><summary>Year-by-year table</summary><div id="yy"></div></details>
 <script src="/assets/calc.js" defer></script>
 """
 
 # ---------- pages ----------
 b18, c18, basis18, rows = project()
+HERO = """<section class="hero">
+<h1>Does your child have free money waiting? Find out in 30 seconds.</h1>
+<p class="sub">Most U.S. kids under 18 now have a Trump Account. Some also got $1,000 or $250 for free. Here is how to check and claim it. You never have to pay anyone.</p>
+<div class="card quick"><label for="qby">Child's birth year
+<select id="qby">""" + "".join(f'<option{" selected" if y == 2025 else ""}>{y}</option>' for y in range(2028, 2005, -1)) + """</select></label>
+<div id="qout" aria-live="polite"><ul class="res">
+<li><strong>Born 2025–2028:</strong> a free $1,000 from the Treasury (U.S. citizen with an SSN). You must ask for it on Form 4547.</li>
+<li><strong>Born 2016–2024:</strong> maybe $250 from Michael &amp; Susan Dell, paid automatically by Oct 9, 2026 in qualifying ZIP codes.</li>
+<li><strong>Under 18 with an SSN:</strong> an account was likely opened for your child on Oct 1, 2026. You still need to claim it.</li></ul></div>
+</div>
+<ol class="steps">
+<li><a class="step" href="/trump-account-eligibility-checker/"><span class="num">1</span><span><strong>Check if my child qualifies</strong><small>The account, the $1,000 and the Dell $250</small></span></a></li>
+<li><a class="step" href="/trump-account-calculator/"><span class="num">2</span><span><strong>See how much it could grow</strong><small>Try $0, $10 or $25 a month</small></span></a></li>
+<li><a class="step" href="/how-to-claim-trump-account/"><span class="num">3</span><span><strong>How to claim it</strong><small>Free, in the official app</small></span></a></li>
+</ol>
+<script src="/assets/quick.js" defer></script>
+</section>"""
 home_body = f"""
+<div class="card warn"><strong>Claiming is free.</strong> No one from the program will ask you for a fee to get the $1,000 or $250. Start from <a href="https://trumpaccounts.gov/" rel="noopener">trumpaccounts.gov</a> or <a href="https://www.irs.gov/trumpaccounts" rel="noopener">irs.gov/trumpaccounts</a>, not from a text, email or ad.</div>
+<h2>What is a Trump Account?</h2>
 <p class="lead">{DEF}</p>
-<div class="answer"><strong>Quick answer:</strong> the $1,000 seed alone grows to about <strong>{money(project(0,True,False,0)[0])}</strong> by age 18 at a 7% return. Adding $1,000 a year from birth gives about <strong>{money(b18)}</strong> by 18. The maximum ($5,000/yr) gives about <strong>{money(project(0,True,False,5000)[0])}</strong>. Use the calculator for your own numbers.</div>
+<div class="answer"><strong>Quick answer:</strong> at a 7% yearly return, the free $1,000 alone could grow to about <strong>{money(project(0,True,False,0)[0])}</strong> by age 18. Add $25 a month and it could be about <strong>{money(project(0,True,False,300)[0])}</strong>. Add $1,000 a year and it could be about <strong>{money(b18)}</strong>. Returns are not guaranteed.</div>
 <h2>Trump Account calculator</h2>
 {CALC_FORM}
-<noscript><p>The interactive calculator needs JavaScript. The table below shows common scenarios.</p></noscript>
-<h2>How much will a Trump Account be worth? Common scenarios</h2>
+<h2>How much will a Trump Account be worth? Examples</h2>
 {SCEN}{SCEN_NOTE}
-<h2>Guides</h2>
+<h2>All guides</h2>
 <ul class="cards">
-<li><a href="/trump-account-calculator/">Trump Account calculator with after-tax value</a> – projects the balance at 18 or later, and what you keep after tax.</li>
-<li><a href="/trump-account-eligibility-checker/">Eligibility checker</a> – does your child qualify for the account, the $1,000 seed, or the Dell $250?</li>
-<li><a href="/trump-account-vs-529/">Trump Account vs 529 plan</a> – which one to fund first, side-by-side table.</li>
-<li><a href="/trump-account-vs-custodial-roth-ira/">Trump Account vs custodial Roth IRA vs UTMA</a> – comparison table.</li>
-<li><a href="/does-my-child-have-a-trump-account/">How do I know if my child has a Trump Account?</a> – auto-enrollment check, and whether the app is legit.</li>
-<li><a href="/how-to-claim-trump-account/">How to claim a Trump Account</a> – step by step after automatic enrollment.</li>
-<li><a href="/form-4547-cp318-notice/">Form 4547 rejected / Notice CP318</a> – what it means and how to fix it.</li>
-<li><a href="/trump-account-rules/">Trump Account rules 2026</a> – limits, investments, withdrawals, taxes.</li>
+<li><a href="/trump-account-calculator/">Trump Account calculator</a>: value at 18 and what you keep after tax.</li>
+<li><a href="/trump-account-eligibility-checker/">Eligibility checker</a>: the account, the $1,000 and the Dell $250.</li>
+<li><a href="/does-my-child-have-a-trump-account/">How do I know if my child has a Trump Account?</a> And is the app real?</li>
+<li><a href="/how-to-claim-trump-account/">How to claim a Trump Account</a>: step by step.</li>
+<li><a href="/form-4547-cp318-notice/">Form 4547 rejected / Notice CP318</a>: what it means and how to fix it.</li>
+<li><a href="/trump-account-vs-529/">Trump Account vs 529 plan</a>: which to fund first.</li>
+<li><a href="/trump-account-vs-custodial-roth-ira/">Trump Account vs custodial Roth IRA vs UTMA</a>.</li>
+<li><a href="/trump-account-rules/">Trump Account rules 2026</a>: limits, investments, withdrawals, taxes.</li>
 </ul>
 """
 page("/", "Trump Account Calculator 2026 – Seed, $5,000 Limit & After-Tax Value", 
      "Free Trump Account calculator: project a child's 530A account from the $1,000 seed and yearly deposits, see after-tax value, and compare with a 529.",
-     home_body, h1="Trump Account Calculator & Guide (2026)",
+     home_body, h1="Trump Account Calculator & Guide (2026)", hero=HERO,
      ld={"@type": "WebApplication", "name": "Trump Account Calculator", "url": BASE + "/", "applicationCategory": "FinanceApplication",
          "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}},
      faqs=[("What is a Trump Account?", DEF),
@@ -194,12 +234,15 @@ page("/", "Trump Account Calculator 2026 – Seed, $5,000 Limit & After-Tax Valu
 
 # Calculator page
 calc_body = f"""
-<p class="lead">Enter your child's age, how much the family and an employer will add each year, and an expected return. The calculator applies the $5,000 annual cap (employer max $2,500), the 0.10% fund-fee cap, stops contributions at 18, and estimates what you would keep after tax if the money is withdrawn.</p>
+<p class="lead">Enter your child's age and how much you might add each year. Even $0 counts: the free $1,000 still grows. We do the math.</p>
 {CALC_FORM}
-<h2>How the calculation works</h2>
-<p>Each year until the child turns 18: <code>balance = (balance + family + employer) × (1 + return − fee)</code>. From 18 onward no new Trump Account contributions are modeled and the balance compounds alone. The starting balance includes the $1,000 Treasury seed and/or the Dell $250 deposit if ticked.</p>
+<h2>How the math works</h2>
+<p>Each year until 18, we add your money and let it grow by the return you picked, minus the fund fee. After 18, nothing new is added and the balance keeps growing.</p>
+<details><summary>Details: the formula, the Dell $250 and taxes</summary>
+<p>Each year until the child turns 18: <code>balance = (balance + family + employer) × (1 + return − fee)</code>. The starting balance includes the $1,000 Treasury seed and/or the Dell $250 deposit if ticked.</p>
 <p><strong>Dell $250:</strong> @@DELLFACT@@@@DELLCITE@@</p>
-<p><strong>After-tax estimate.</strong> A Trump Account becomes a traditional-IRA-style account. Family contributions are after-tax money and create <em>basis</em>, which is not taxed again. The seed, the Dell gift, employer money and all growth are taxed as ordinary income when withdrawn. The calculator applies your chosen tax rate to that taxable part and, if ticked, a 10% penalty for withdrawals before 59½. This is a simplification; real taxes depend on the year, state and exceptions.</p>
+<p><strong>After-tax estimate.</strong> At 18 the account follows traditional IRA rules. Money the family put in was already taxed, so it is your <em>basis</em> (not taxed again). The seed, the Dell gift, employer money and all growth are taxed as income when taken out. The calculator applies your tax rate to that part and, if ticked, a 10% penalty before 59½. Real taxes depend on the year, your state and exceptions.</p>
+</details>
 <h2>Example: newborn, $1,000 a year, 7% return</h2>
 {table([(r[0], money(r[1]), money(r[2])) for r in rows if r[0] in (1,5,10,15,18)], ["Age", "Contribution that year", "Balance"])}
 <p class=small>Seed included. Total contributed by 18: {money(c18)}; balance {money(b18)}; of which your after-tax basis is {money(basis18)}.</p>
@@ -217,7 +260,7 @@ page("/trump-account-calculator/", "Trump Account Calculator: Growth to 18 and A
 
 # Eligibility checker
 elig_body = """
-<p class="lead">Three different things are often confused: (1) the <strong>account itself</strong>, (2) the <strong>$1,000 Treasury seed</strong>, and (3) the <strong>Dell $250 gift</strong>. Each has its own rules.</p>
+<p class="lead">There are three different things, each with its own rules: (1) the <strong>account</strong>, (2) the free <strong>$1,000</strong> from the Treasury, and (3) the <strong>Dell $250</strong> gift. Answer four questions to see which your child can get.</p>
 <form id="elig" class="calc" onsubmit="return false">
  <div class="grid">
  <label>Child's birth year <input type="number" id="by" min="2000" max="2028" value="2025"></label>
@@ -295,17 +338,18 @@ page("/trump-account-vs-custodial-roth-ira/", "Trump Account vs Custodial Roth I
      sources=[I4547, ("IRS: Retirement topics – IRA contribution limits", "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits")])
 
 howto = """
-<p class="lead"><strong>Short answer:</strong> since October 1, 2026 the Treasury has auto-enrolled eligible children. Download the official Trump Accounts app (or use the website), verify your identity, claim the account, and separately elect the $1,000 seed on Form 4547 if your child was born 2025–2028.</p>
-<h2>Step-by-step</h2>
-<ol>
-<li><strong>Gather details:</strong> your name and identifying information, the child's legal name, Social Security number and date of birth, exactly as on Social Security records.</li>
-<li><strong>Open the official channel:</strong> the Trump Accounts app (Apple App Store / Google Play) or the Trump Accounts website linked from trumpaccounts.gov. Beware of look-alike sites and texts; the SSA Inspector General warns of government-imposter scams.</li>
-<li><strong>Verify your identity</strong> and your authority to manage the child's account.</li>
-<li><strong>Claim and activate</strong> the account.</li>
-<li><strong>Elect the $1,000 seed</strong> (born 2025–2028, U.S. citizen): submit Form 4547 and tick the pilot program contribution, via the app, the website, or your IRS Online Account.</li>
-<li><strong>Optional:</strong> set up contributions (up to $5,000/yr) and ask your employer whether it offers Trump Account contributions.</li>
+<p class="lead"><strong>Short answer:</strong> since Oct 1, 2026, most kids under 18 with an SSN got an account opened for them. You claim it in the official Trump Accounts app or website. If your child was born 2025 to 2028, you also ask for the free $1,000 on Form 4547. It costs nothing.</p>
+<div class="card warn"><strong>Never pay to claim.</strong> Scammers copy this program. Start from <a href="https://trumpaccounts.gov/" rel="noopener">trumpaccounts.gov</a> or <a href="https://www.irs.gov/trumpaccounts" rel="noopener">irs.gov/trumpaccounts</a>. Don't give an SSN to anyone who texts or calls you first.</div>
+<h2>Step by step</h2>
+<ol class="big">
+<li><strong>Get your details ready:</strong> your ID details, plus your child's legal name, SSN and date of birth, exactly as on their Social Security card.</li>
+<li><strong>Open the official app or site:</strong> the Trump Accounts app (Apple App Store or Google Play), or the website linked from trumpaccounts.gov. Watch out for look-alike sites and texts. The SSA Inspector General warns about government imposter scams.</li>
+<li><strong>Prove who you are</strong> and that you can manage the child's account.</li>
+<li><strong>Claim and turn on</strong> the account.</li>
+<li><strong>Ask for the $1,000</strong> (U.S. citizen born 2025–2028): send Form 4547 and pick the pilot program contribution. You can do this in the app, on the website, or in your IRS Online Account.</li>
+<li><strong>Optional:</strong> add money (up to $5,000 a year), and ask your employer if it adds money too.</li>
 </ol>
-<p>Who runs it: Treasury designated BNY as financial agent; Robinhood Securities is the brokerage provider and initial trustee (per the IRS FAQ). Help line: 866-USA-4547.</p>
+<p>Who runs it: Treasury picked BNY as financial agent. Robinhood Securities is the broker and first trustee (per the IRS FAQ). Help line: 866-USA-4547.</p>
 <p>Got a rejection? See <a href="/form-4547-cp318-notice/">Form 4547 / CP318 fixes</a>.</p>
 """
 page("/how-to-claim-trump-account/", "How to Claim a Trump Account (Auto-Enrolled Since Oct 2026): Step by Step",
@@ -371,7 +415,12 @@ page("/does-my-child-have-a-trump-account/", "How Do I Know If My Child Has a Tr
      sources=[IRS, IRSFAQ, GOV, DELL])
 
 rules = """
-<p class="lead">All the key Trump Account numbers in one place, with links to the IRS and statute.</p>
+<p class="lead">All the key Trump Account numbers in one place, with links to the IRS and the law.</p>
+<div class="card"><strong>Words used here, in plain English</strong><ul>
+<li><strong>Section 530A:</strong> the part of the federal tax code that created Trump Accounts.</li>
+<li><strong>Traditional IRA:</strong> a retirement account. You pay income tax on growth when you take money out.</li>
+<li><strong>Basis:</strong> money you put in that was already taxed. It is not taxed again when taken out.</li>
+<li><strong>Index fund:</strong> one fund that holds many companies' stocks, like the S&amp;P 500.</li></ul></div>
 <table><thead><tr><th>Rule</th><th>2026 value</th></tr></thead><tbody>
 <tr><td>Legal basis</td><td>Internal Revenue Code § 530A (2025 tax law, signed July 4, 2025)</td></tr>
 <tr><td>Contributions allowed from</td><td>July 4, 2026</td></tr>
@@ -418,6 +467,7 @@ A = OUT / "assets"; A.mkdir(parents=True, exist_ok=True)
 shutil.copy(ROOT / "src" / "style.css", A / "style.css")
 shutil.copy(ROOT / "src" / "calc.js", A / "calc.js")
 shutil.copy(ROOT / "src" / "elig.js", A / "elig.js")
+shutil.copy(ROOT / "src" / "quick.js", A / "quick.js")
 
 # 404
 (OUT / "404.html").write_text(f'<!doctype html><html lang=en><meta charset=utf-8><title>Not found – {SITE}</title><link rel=stylesheet href=/assets/style.css><main><h1>Page not found</h1><p><a href="/">Go to the Trump Account calculator</a></p></main></html>')

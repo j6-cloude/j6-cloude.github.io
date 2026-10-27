@@ -1,0 +1,3 @@
+public/index.html: top-of-page FK grade 3.1 (196 words) | whole page FK 4.7 (780 words)
+public/trump-account-calculator/index.html: top-of-page FK grade 1.0 (26 words) | whole page FK 6.1 (459 words)
+public/how-to-claim-trump-account/index.html: top-of-page FK grade 2.9 (79 words) | whole page FK 4.4 (353 words)
