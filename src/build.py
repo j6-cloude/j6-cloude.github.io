@@ -31,7 +31,7 @@ def money(x): return "${:,.0f}".format(x)
 
 # ---------- layout ----------
 NAV = [("/", "Home"), ("/trump-account-calculator/", "Calculator"), ("/trump-account-eligibility-checker/", "Eligibility"),
-       ("/trump-account-vs-529/", "vs 529"), ("/how-to-claim-trump-account/", "How to claim"), ("/trump-account-rules/", "Rules")]
+       ("/trump-account-vs-529/", "vs 529"), ("/does-my-child-have-a-trump-account/", "Check my child"), ("/how-to-claim-trump-account/", "How to claim"), ("/trump-account-rules/", "Rules")]
 
 ORG = {"@type": "Organization", "@id": BASE + "/#org", "name": SITE, "url": BASE + "/",
        "description": TAGLINE, "email": CONTACT_EMAIL}
@@ -162,6 +162,7 @@ home_body = f"""
 <li><a href="/trump-account-eligibility-checker/">Eligibility checker</a> – does your child qualify for the account, the $1,000 seed, or the Dell $250?</li>
 <li><a href="/trump-account-vs-529/">Trump Account vs 529 plan</a> – which one to fund first, side-by-side table.</li>
 <li><a href="/trump-account-vs-custodial-roth-ira/">Trump Account vs custodial Roth IRA vs UTMA</a> – comparison table.</li>
+<li><a href="/does-my-child-have-a-trump-account/">How do I know if my child has a Trump Account?</a> – auto-enrollment check, and whether the app is legit.</li>
 <li><a href="/how-to-claim-trump-account/">How to claim a Trump Account</a> – step by step after automatic enrollment.</li>
 <li><a href="/form-4547-cp318-notice/">Form 4547 rejected / Notice CP318</a> – what it means and how to fix it.</li>
 <li><a href="/trump-account-rules/">Trump Account rules 2026</a> – limits, investments, withdrawals, taxes.</li>
@@ -331,6 +332,29 @@ page("/form-4547-cp318-notice/", "IRS Notice CP318 / Form 4547 Rejected: What It
            ("Should I file Form 1040-X to fix Form 4547?", "No. The IRS says not to; follow the CP318 instructions and resubmit Form 4547."),
            ("Can the IRS fix my election by phone?", "The IRS says its customer service representatives cannot correct the election by phone or help claim the account.")],
      sources=[IRSFAQ, I4547])
+
+chk = """
+<p class="lead"><strong>Short answer:</strong> if your child has a valid SSN and is under 18, the Treasury has probably opened one automatically (auto-enrollment began October 1, 2026). To confirm, use the official Trump Accounts app or website: the IRS says you can check there whether an account has been established and then claim it. You may also get a Treasury letter if your child may qualify for the $1,000 contribution.</p>
+<h2>How to check, step by step</h2>
+<ol><li>Install the <strong>Trump Accounts</strong> app from the Apple App Store or Google Play, or go to the website linked from <a href="https://trumpaccounts.gov/">trumpaccounts.gov</a>.</li>
+<li>Verify your identity and your authority over the child.</li>
+<li>Enter the child's legal name, SSN and date of birth exactly as on Social Security records. If an account exists, you will be able to claim and activate it.</li>
+<li>Born 2025–2028? Separately elect the $1,000 seed (Form 4547) — auto-enrollment does not elect it for you.</li>
+<li>Born 2016–2024? Check whether the Dell $250 was deposited (see the <a href="/trump-account-eligibility-checker/">eligibility checker</a>).</li></ol>
+<h2>Is the Trump Account app legit?</h2>
+<p>The IRS's own Trump Accounts page tells parents to download the Trump Accounts app from the Apple App Store or Google Play to claim an account, and its FAQ names BNY as Treasury's financial agent and Robinhood Securities as brokerage provider and initial trustee. So the official app is real — but scammers imitate it. Safe habits:</p>
+<ul><li>Start from irs.gov/trumpaccounts or trumpaccounts.gov, not from a text, email or ad link.</li>
+<li>No one from the program needs you to pay a fee to receive the $1,000 or $250.</li>
+<li>Don't give an SSN to anyone who contacts you first. The official help line is 866-USA-4547 (866-872-4547).</li></ul>
+"""
+page("/does-my-child-have-a-trump-account/", "How Do I Know If My Child Has a Trump Account? (Auto-Enrollment 2026)",
+     "Check whether your child was auto-enrolled in a Trump Account, how to claim it, and whether the Trump Accounts app is legit.",
+     chk, h1="How Do I Know If My Child Has a Trump Account?",
+     faqs=[("How do I know if my child has a Trump Account?", "Use the official Trump Accounts app or website; the IRS says it lets you check whether an account was established for your child and begin claiming it. Since October 1, 2026 eligible children have been auto-enrolled."),
+           ("Is the Trump Account app legit?", "Yes, the IRS directs parents to the Trump Accounts app on the Apple App Store and Google Play. Reach it from irs.gov/trumpaccounts or trumpaccounts.gov to avoid imitations."),
+           ("Does auto-enrollment include the $1,000?", "No. You must still elect the $1,000 pilot contribution on Form 4547 if your child qualifies."),
+           ("Do I have to put money in?", "No. Contributions are optional; the account can hold just the seed or Dell gift.")],
+     sources=[IRS, IRSFAQ, GOV])
 
 rules = """
 <p class="lead">All the key Trump Account numbers in one place, with links to the IRS and statute.</p>
