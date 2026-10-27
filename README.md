@@ -10,4 +10,4 @@ AdSense: paste the script tag in src/build.py <head> (comment marks the spot) an
 Facts sources: IRS Trump Accounts page + FAQ, Form 4547 instructions, 26 USC 530A, Invest America (Dell $250). Re-check monthly; update UPDATED in build.py.
 Verify: GOOGLE_SITE_VERIFICATION=xxx BING_SITE_VERIFICATION=yyy BASE_URL=https://j6-cloude.github.io python3 src/build.py  (content= values only), then redeploy public/ to main.
 Deploy (GitHub Pages, repo j6-cloude/j6-cloude.github.io): branch `source` = generator; branch `main` = contents of public/ (+ .nojekyll).
-  BASE_URL=https://j6-cloude.github.io python3 src/build.py && rm -rf /tmp/deploy && cp -r public /tmp/deploy && cd /tmp/deploy && git init -q -b main && git add -A && git commit -qm deploy && git push -f https://github.com/j6-cloude/j6-cloude.github.io.git main
+  BASE_URL=https://j6-cloude.github.io python3 src/build.py && rm -rf /tmp/deploy && git clone -q -b main https://github.com/j6-cloude/j6-cloude.github.io.git /tmp/deploy && cp -r public/. /tmp/deploy/ && cd /tmp/deploy && git add -A && git commit -qm deploy && git push origin main   # normal push, never -f
