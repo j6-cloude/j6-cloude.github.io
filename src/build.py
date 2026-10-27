@@ -157,6 +157,24 @@ def scenario_rows():
 SCEN = table(scenario_rows(), ["Family adds", "Total put in by 18", "Value at 18", "Value at 30 (no more deposits)"])
 SCEN_NOTE = "<p class=small>Assumes a newborn who gets the $1,000 Treasury seed, deposits at the start of each year until age 17, a 7% annual return before a 0.03% fund fee, no withdrawals, nominal dollars (not inflation-adjusted), and the $5,000 limit held flat. Returns are not guaranteed; stock index funds can lose money in any year.</p>"
 
+SHARE_COMMON = """
+  <img id="shimg" class="shimg" alt="Celebration card with your child's result" width="1080" height="1350" hidden>
+  <div class="shbtns"><button type="button" class="btn" id="shdl">Download image</button><button type="button" class="btn alt" id="shnat" hidden>Share…</button></div>
+  <div class="shlinks"><a id="shfb" href="#" target="_blank" rel="noopener">Facebook</a><a id="shsms" href="#">Text message</a><a id="shwa" href="#" target="_blank" rel="noopener">WhatsApp</a><button type="button" id="shcopy">Copy link</button></div>
+  <label class="shurl" for="shurl">Link to share <input id="shurl" readonly></label>
+  <p class="small">Just for fun: made by KidAccountMath, an independent site. Not a government document.</p>"""
+NAME_FIELD = """<label for="shname">Child's first name or nickname (optional) <input id="shname" maxlength="20" autocomplete="off" placeholder="Our little one"></label>"""
+SHARE_PROJ = f"""<section id="share" class="share" data-kind="proj" hidden aria-labelledby="shh"><h3 id="shh">🎉 Share your child's number</h3>
+  <p class="small">Make a little certificate for your partner or family. The name stays on your device unless you tick the box.</p>
+  {NAME_FIELD}<label class="chk"><input type="checkbox" id="shincl"> Include name in link</label>{SHARE_COMMON}
+ </section>"""
+SHARE_CLAIM = f"""<section id="share" class="share" data-kind="claim" aria-labelledby="shh"><h3 id="shh">🎉 Already claimed the $1,000?</h3>
+ <p>Celebrate it, and remind other parents to claim theirs. Nothing is checked or sent anywhere.</p>
+ <button type="button" class="btn" id="shgo">I've claimed it — make my certificate</button>
+ <div id="shbody" hidden>{NAME_FIELD}{SHARE_COMMON}</div>
+</section>
+<script src="/assets/share.js" defer></script>"""
+
 CALC_FORM = """
 <form id="calc" class="calc card" onsubmit="return false">
  <div class="grid">
@@ -168,13 +186,7 @@ CALC_FORM = """
   <button type="button" data-fam="0">$0</button><button type="button" data-fam="120">$10/mo</button><button type="button" data-fam="300">$25/mo</button><button type="button" data-fam="600">$50/mo</button><button type="button" data-fam="1200">$100/mo</button></div>
  <label class="chk"><input type="checkbox" id="seed" checked> Include the free $1,000 (U.S. citizen born 2025–2028)</label>
  <div id="out" class="out" aria-live="polite"><noscript>The calculator needs JavaScript. See the table of examples below.</noscript></div>
- <section id="share" class="share" hidden aria-labelledby="shh"><h3 id="shh">Share your child's number</h3>
-  <p class="small">Send this picture to your partner or family. The link opens the calculator with these same numbers. Nothing you type leaves your device.</p>
-  <img id="shimg" class="shimg" alt="Picture card showing your child's estimated Trump Account value" width="1080" height="1350" hidden>
-  <div class="shbtns"><button type="button" class="btn" id="shdl">Download image</button><button type="button" class="btn alt" id="shnat" hidden>Share…</button></div>
-  <div class="shlinks"><a id="shfb" href="#" target="_blank" rel="noopener">Facebook</a><a id="shsms" href="#">Text message</a><a id="shwa" href="#" target="_blank" rel="noopener">WhatsApp</a><button type="button" id="shcopy">Copy link</button></div>
-  <label class="shurl" for="shurl">Link to these numbers <input id="shurl" readonly></label>
- </section>
+@@SHAREPROJ@@
  <details class="adv"><summary>Advanced options</summary><div class="grid">
   <label for="emp">Employer adds per year ($, max 2,500) <input type="number" id="emp" min="0" max="2500" step="50" value="0"></label>
   <label for="fee">Fund fee (%, legal max 0.10) <input type="number" id="fee" min="0" max="0.1" step="0.01" value="0.03"></label>
@@ -189,6 +201,8 @@ CALC_FORM = """
 <details><summary>Year-by-year table</summary><div id="yy"></div></details>
 <script src="/assets/share.js" defer></script><script src="/assets/calc.js" defer></script>
 """
+
+CALC_FORM = CALC_FORM.replace("@@SHAREPROJ@@", SHARE_PROJ)
 
 # ---------- pages ----------
 b18, c18, basis18, rows = project()
@@ -287,6 +301,7 @@ elig_body = """
 </tbody></table>
 <noscript><p>The checker needs JavaScript; the table above contains the same rules.</p></noscript>
 """
+elig_body = elig_body.replace('<script src="/assets/elig.js" defer></script>', '<script src="/assets/elig.js" defer></script>\n' + SHARE_CLAIM, 1)
 page("/trump-account-eligibility-checker/", "Trump Account Eligibility Checker: Account, $1,000 Seed and Dell $250",
      "Check whether your child qualifies for a Trump Account, the $1,000 Treasury seed (born 2025–2028) and the Dell $250 deposit (born 2016–2024).",
      elig_body, h1="Trump Account Eligibility Checker",
@@ -361,6 +376,7 @@ howto = """
 <p>Who runs it: Treasury picked BNY as financial agent. Robinhood Securities is the broker and first trustee (per the IRS FAQ). Help line: 866-USA-4547.</p>
 <p>Got a rejection? See <a href="/form-4547-cp318-notice/">Form 4547 / CP318 fixes</a>.</p>
 """
+howto = howto.replace("</ol>\n<p>Who runs it", "</ol>\n" + SHARE_CLAIM + "\n<p>Who runs it", 1)
 page("/how-to-claim-trump-account/", "How to Claim a Trump Account (Auto-Enrolled Since Oct 2026): Step by Step",
      "How to claim your child's auto-enrolled Trump Account, elect the $1,000 seed on Form 4547, and avoid scams. Step-by-step guide.",
      howto, h1="How to Claim a Trump Account",
