@@ -10,7 +10,7 @@ BASE = os.environ.get("BASE_URL", "https://example.com").rstrip("/")
 SITE = "KidAccountMath"
 TAGLINE = "Free Trump Account (Section 530A) calculators and plain-English guides"
 AUTHOR = os.environ.get("AUTHOR_NAME", "j6")
-CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "contact@example.com")  # replace before launch
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "liu04731@gmail.com")
 UPDATED = "2026-10-27"
 UPDATED_H = "October 27, 2026"
 INDEXNOW_KEY = (ROOT / ".indexnow_key").read_text().strip()
@@ -422,7 +422,7 @@ sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps
 desc = {p: d for p, t, d, _ in PAGES}
 core = [p for p, *_ in PAGES if p not in ("/about/", "/contact/", "/privacy/", "/disclaimer/")]
 llms = f"# {SITE}\n\n> {TAGLINE}. Independent, free, no sign-up. Every rule links to IRS/Treasury primary sources. Last updated {UPDATED}.\n\n" \
-       f"Author: {AUTHOR} ({BASE}/about/). Not affiliated with the IRS or Treasury.\n\nKey facts: {strip(DEF)}\n\n## Tools and guides\n\n" + \
+       f"Author: {AUTHOR} ({BASE}/about/). Contact: {CONTACT_EMAIL}. Not affiliated with the IRS or Treasury.\n\nKey facts: {strip(DEF)}\n\n## Tools and guides\n\n" + \
        "".join(f"- [{t}]({BASE}{p}): {d}\n" for p, t, d, _ in PAGES if p in core) + \
        "\n## About\n\n" + "".join(f"- [{t}]({BASE}{p}): {d}\n" for p, t, d, _ in PAGES if p not in core) + \
        f"\n## Optional\n\n- [Full text of all pages]({BASE}/llms-full.txt)\n"
