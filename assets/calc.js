@@ -20,7 +20,17 @@
    '<p class=small>Illustration only; returns are not guaranteed. Contributions modeled at the start of each year until 18.</p>';
   var h='<table><thead><tr><th>Age</th><th>Added</th><th>Balance</th></tr></thead><tbody>';
   rows.forEach(function(x){h+='<tr><td>'+x[0]+'</td><td>'+f(x[1])+'</td><td>'+f(x[2])+'</td></tr>'});$('yy').innerHTML=h+'</tbody></table>';
+  if(window.KAMShare)KAMShare.update({age:age,fam:fam,emp:emp,r:r,to:to,seed:$('seed').checked,dell:$('dell').checked,bal:b});
+ }
+ // Pre-fill from a shared link, e.g. ?age=0&amt=1000&r=7 (optional: seed=0, dell=1, emp=500, to=30)
+ function prefill(){
+  var q=new URLSearchParams(location.search),m={age:'age',amt:'fam',r:'ret',emp:'emp',to:'to'},hit=false;
+  Object.keys(m).forEach(function(k){var v=parseFloat(q.get(k));if(q.has(k)&&isFinite(v)){$(m[k]).value=v;hit=true;}});
+  if(q.has('seed')){$('seed').checked=q.get('seed')!=='0';hit=true;}
+  if(q.has('dell')){$('dell').checked=q.get('dell')==='1';hit=true;}
+  if((q.has('emp')||q.has('to')||q.has('dell'))&&$('emp').closest)$('emp').closest('details').open=true;
+  return hit;
  }
  document.addEventListener('DOMContentLoaded',function(){var fm=$('calc');if(!fm)return;fm.addEventListener('input',function(e){if(e.target.id==='fam')mark();run();});fm.addEventListener('change',run);
-  [].forEach.call(fm.querySelectorAll('[data-fam]'),function(bt){bt.addEventListener('click',function(){$('fam').value=bt.getAttribute('data-fam');mark();run();});});mark();run();});
+  [].forEach.call(fm.querySelectorAll('[data-fam]'),function(bt){bt.addEventListener('click',function(){$('fam').value=bt.getAttribute('data-fam');mark();run();});});var hit=prefill();mark();run();if(hit)$('out').scrollIntoView({block:'center'});});
 })();
