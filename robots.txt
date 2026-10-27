@@ -58,3 +58,4 @@ Allow: /
 Sitemap: https://j6-cloude.github.io/sitemap.xml
 Sitemap: https://j6-cloude.github.io/heat-pump-savings/sitemap.xml
 Sitemap: https://j6-cloude.github.io/ai-ipo-guide/sitemap.xml
+Sitemap: https://j6-cloude.github.io/benefit-paydays/sitemap.xml
