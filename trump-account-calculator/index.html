@@ -33,12 +33,14 @@
   <button type="button" data-fam="0">$0</button><button type="button" data-fam="120">$10/mo</button><button type="button" data-fam="300">$25/mo</button><button type="button" data-fam="600">$50/mo</button><button type="button" data-fam="1200">$100/mo</button></div>
  <label class="chk"><input type="checkbox" id="seed" checked> Include the free $1,000 (U.S. citizen born 2025–2028)</label>
  <div id="out" class="out" aria-live="polite"><noscript>The calculator needs JavaScript. See the table of examples below.</noscript></div>
- <section id="share" class="share" hidden aria-labelledby="shh"><h3 id="shh">Share your child's number</h3>
-  <p class="small">Send this picture to your partner or family. The link opens the calculator with these same numbers. Nothing you type leaves your device.</p>
-  <img id="shimg" class="shimg" alt="Picture card showing your child's estimated Trump Account value" width="1080" height="1350" hidden>
+<section id="share" class="share" data-kind="proj" hidden aria-labelledby="shh"><h3 id="shh">🎉 Share your child's number</h3>
+  <p class="small">Make a little certificate for your partner or family. The name stays on your device unless you tick the box.</p>
+  <label for="shname">Child's first name or nickname (optional) <input id="shname" maxlength="20" autocomplete="off" placeholder="Our little one"></label><label class="chk"><input type="checkbox" id="shincl"> Include name in link</label>
+  <img id="shimg" class="shimg" alt="Celebration card with your child's result" width="1080" height="1350" hidden>
   <div class="shbtns"><button type="button" class="btn" id="shdl">Download image</button><button type="button" class="btn alt" id="shnat" hidden>Share…</button></div>
   <div class="shlinks"><a id="shfb" href="#" target="_blank" rel="noopener">Facebook</a><a id="shsms" href="#">Text message</a><a id="shwa" href="#" target="_blank" rel="noopener">WhatsApp</a><button type="button" id="shcopy">Copy link</button></div>
-  <label class="shurl" for="shurl">Link to these numbers <input id="shurl" readonly></label>
+  <label class="shurl" for="shurl">Link to share <input id="shurl" readonly></label>
+  <p class="small">Just for fun: made by KidAccountMath, an independent site. Not a government document.</p>
  </section>
  <details class="adv"><summary>Advanced options</summary><div class="grid">
   <label for="emp">Employer adds per year ($, max 2,500) <input type="number" id="emp" min="0" max="2500" step="50" value="0"></label>
