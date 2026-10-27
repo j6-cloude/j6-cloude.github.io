@@ -68,7 +68,11 @@
   rr(c,48,48,W-96,H-96,34);c.fillStyle=C.paper;c.fill();c.lineWidth=10;c.strokeStyle=C.acc;c.stroke();
   rr(c,72,72,W-144,H-144,24);c.lineWidth=3;c.strokeStyle=C.gold;c.setLineDash([14,10]);c.stroke();c.setLineDash([]);
   [[100,100],[W-100,100],[100,H-100],[W-100,H-100]].forEach(function(p){star(c,p[0],p[1],20,C.gold)});
-  confetti(c,W-240,300,seed+7,34,[180,40,W-420,300]);
+  // inner confetti only in text-free zones: strip above the headline + thin side gutters
+  var R=rng(seed+7),cols=[C.acc,C.gold,C.teal,C.pink,'#f2c14e','#7fb7a9'];
+  for(var i=0;i<30;i++){var x,y;if(i<14){x=150+R()*(W-300);y=100+R()*16;}else{x=(i%2?W-108:94)+R()*14;y=150+R()*(H-500);}
+   var col=cols[Math.floor(R()*cols.length)],k=R();c.save();c.translate(x,y);c.rotate(R()*Math.PI);c.globalAlpha=.75;c.fillStyle=col;
+   if(k<.5)c.fillRect(-8,-3.5,16,7);else{c.beginPath();c.arc(0,0,4+R()*2,0,7);c.fill();}c.restore();}
  }
  function banner(c,y,text){
   c.save();c.textAlign='center';c.textBaseline='middle';var sz=fit(c,text,'800',40,640),w=c.measureText(text).width+120,x=W/2-w/2;
@@ -102,7 +106,7 @@
   c.textAlign='center';c.textBaseline='alphabetic';
   c.fillStyle=C.goldd;c.font=font('800',30);c.fillText('★  ACHIEVEMENT UNLOCKED  ★',cx,168);
   rosette(c,cx,318,112,'CLAIMED!','🎉');
-  var sz=68,lines;do{c.font=font('800',sz);lines=wrap(c,msg,W-230);sz-=4}while(lines.length>3&&sz>40);
+  var sz=68,lines;do{c.font=font('800',sz);lines=wrap(c,msg,W-260);sz-=4}while(lines.length>3&&sz>40);
   var lh=sz*1.16,y=626;lines.forEach(function(l){c.fillStyle=/\$1,000/.test(l)?C.accd:C.ink;c.fillText(l,cx,y);y+=lh;});
   c.font=font('400',54,EMO);c.fillText('🎉  🥳  🎈',cx,y+4);
   var by=Math.min(y+40,888);rr(c,150,by,W-300,124,26);c.fillStyle=C.soft;c.fill();
