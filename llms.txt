@@ -1,0 +1,30 @@
+# KidAccountMath
+
+> Free Trump Account (Section 530A) calculators and plain-English guides. Independent, free, no sign-up. Every rule links to IRS/Treasury primary sources. Last updated 2026-10-27.
+
+Author: j6 (https://j6-cloude.github.io/about/). Contact: liu04731@gmail.com. Not affiliated with the IRS or Treasury.
+
+Key facts: A Trump Account is a tax-advantaged investment account for U.S. children created by the 2025 tax law (Internal Revenue Code section 530A). It is legally a type of traditional IRA for a child under 18. Family and others can add up to $5,000 a year (employers up to $2,500 of that), the money must sit in low-cost U.S. stock index funds (fees of 0.10% or less), and it generally cannot be withdrawn until the year the child turns 18. Children born 2025–2028 who are U.S. citizens can get a one-time $1,000 from the Treasury.
+
+## Tools and guides
+
+- [Trump Account Calculator 2026 – Seed, $5,000 Limit & After-Tax Value](https://j6-cloude.github.io/): Free Trump Account calculator: project a child's 530A account from the $1,000 seed and yearly deposits, see after-tax value, and compare with a 529.
+- [Trump Account Calculator: Growth to 18 and After-Tax Value (2026)](https://j6-cloude.github.io/trump-account-calculator/): Project a Trump Account balance from the $1,000 seed, family and employer deposits up to $5,000/yr, with fees, inflation and after-tax value.
+- [Trump Account Eligibility Checker: Account, $1,000 Seed and Dell $250](https://j6-cloude.github.io/trump-account-eligibility-checker/): Check whether your child qualifies for a Trump Account, the $1,000 Treasury seed (born 2025–2028) and the Dell $250 deposit (born 2016–2024).
+- [Trump Account vs 529 Plan: Which Is Better for Your Child? (2026)](https://j6-cloude.github.io/trump-account-vs-529/): Side-by-side Trump Account vs 529 comparison: limits, free money, taxes on withdrawal, investments and which to fund first.
+- [Trump Account vs Custodial Roth IRA vs UTMA: Comparison Table](https://j6-cloude.github.io/trump-account-vs-custodial-roth-ira/): Compare a Trump Account with a custodial Roth IRA and a UTMA/UGMA account: earned income rules, limits, taxes and access.
+- [How to Claim a Trump Account (Auto-Enrolled Since Oct 2026): Step by Step](https://j6-cloude.github.io/how-to-claim-trump-account/): How to claim your child's auto-enrolled Trump Account, elect the $1,000 seed on Form 4547, and avoid scams. Step-by-step guide.
+- [IRS Notice CP318 / Form 4547 Rejected: What It Means and How to Fix It](https://j6-cloude.github.io/form-4547-cp318-notice/): Got IRS Notice CP318 or 'unable to process' on Form 4547 for a Trump Account? Common causes, fixes, and what not to do.
+- [How Do I Know If My Child Has a Trump Account? (Auto-Enrollment 2026)](https://j6-cloude.github.io/does-my-child-have-a-trump-account/): Check whether your child was auto-enrolled in a Trump Account, how to claim it, and whether the Trump Accounts app is legit.
+- [Trump Account Rules 2026: Limits, Investments, Withdrawals and Taxes](https://j6-cloude.github.io/trump-account-rules/): Every Trump Account rule in one table: $5,000 limit, $2,500 employer cap, $1,000 seed, eligible index funds, withdrawal age and taxation.
+
+## About
+
+- [About KidAccountMath](https://j6-cloude.github.io/about/): Who runs KidAccountMath, how the calculators work, and how we source Trump Account information.
+- [Contact KidAccountMath](https://j6-cloude.github.io/contact/): How to contact KidAccountMath with corrections or questions.
+- [Privacy Policy](https://j6-cloude.github.io/privacy/): KidAccountMath privacy policy: calculators run in your browser; cookies and advertising disclosures.
+- [Disclaimer](https://j6-cloude.github.io/disclaimer/): Educational information only; not tax, legal or investment advice.
+
+## Optional
+
+- [Full text of all pages](https://j6-cloude.github.io/llms-full.txt)

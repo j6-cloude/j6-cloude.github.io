@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trump Account Calculator: Growth to 18 and After-Tax Value (2026)</title>
+<meta name="description" content="Project a Trump Account balance from the $1,000 seed, family and employer deposits up to $5,000/yr, with fees, inflation and after-tax value.">
+<link rel="canonical" href="https://j6-cloude.github.io/trump-account-calculator/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta property="og:type" content="website"><meta property="og:title" content="Trump Account Calculator: Growth to 18 and After-Tax Value (2026)">
+<meta property="og:description" content="Project a Trump Account balance from the $1,000 seed, family and employer deposits up to $5,000/yr, with fees, inflation and after-tax value."><meta property="og:url" content="https://j6-cloude.github.io/trump-account-calculator/"><meta property="og:site_name" content="KidAccountMath">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+<link rel="stylesheet" href="/assets/style.css">
+<!-- AdSense: paste the <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX"> tag here after approval -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://j6-cloude.github.io/#org", "name": "KidAccountMath", "url": "https://j6-cloude.github.io/", "description": "Free Trump Account (Section 530A) calculators and plain-English guides", "email": "liu04731@gmail.com"}, {"@type": "WebSite", "@id": "https://j6-cloude.github.io/#site", "url": "https://j6-cloude.github.io/", "name": "KidAccountMath", "publisher": {"@id": "https://j6-cloude.github.io/#org"}}, {"@type": "WebPage", "@id": "https://j6-cloude.github.io/trump-account-calculator/", "url": "https://j6-cloude.github.io/trump-account-calculator/", "name": "Trump Account Calculator: Growth to 18 and After-Tax Value (2026)", "description": "Project a Trump Account balance from the $1,000 seed, family and employer deposits up to $5,000/yr, with fees, inflation and after-tax value.", "dateModified": "2026-10-27", "isPartOf": {"@id": "https://j6-cloude.github.io/#site"}, "author": {"@type": "Person", "name": "j6", "url": "https://j6-cloude.github.io/about/"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://j6-cloude.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Trump Account Calculator", "item": "https://j6-cloude.github.io/trump-account-calculator/"}]}, {"@type": "WebApplication", "name": "Trump Account Calculator", "url": "https://j6-cloude.github.io/trump-account-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does the calculator include the $1,000 seed?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, if you tick the seed box. Only U.S. citizens born January 1, 2025 through December 31, 2028 qualify, and a parent must elect it on Form 4547."}}, {"@type": "Question", "name": "What return should I use?", "acceptedAnswer": {"@type": "Answer", "text": "There is no guaranteed return. Broad U.S. stock indexes have historically averaged roughly 10% nominal per year over long periods, with large losses in some years. Many planners use 5–7% to be conservative."}}, {"@type": "Question", "name": "Is the Trump Account tax-free?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is tax-deferred, not tax-free. Growth is taxed as ordinary income when withdrawn (after 18), except the after-tax family contributions (basis)."}}]}]}</script>
+</head><body>
+<header><a class="brand" href="/">KidAccountMath</a><nav><a href="/">Home</a><a href="/trump-account-calculator/" aria-current=page>Calculator</a><a href="/trump-account-eligibility-checker/">Eligibility</a><a href="/trump-account-vs-529/">vs 529</a><a href="/does-my-child-have-a-trump-account/">Check my child</a><a href="/how-to-claim-trump-account/">How to claim</a><a href="/trump-account-rules/">Rules</a></nav></header>
+<main>
+<h1>Trump Account Calculator</h1>
+<p class="meta">Written by <a href="/about/">j6</a> · Updated <time datetime="2026-10-27">October 27, 2026</time> · Based on IRS/Treasury guidance · Not tax advice</p>
+
+<p class="lead">Enter your child's age, how much the family and an employer will add each year, and an expected return. The calculator applies the $5,000 annual cap (employer max $2,500), the 0.10% fund-fee cap, stops contributions at 18, and estimates what you would keep after tax if the money is withdrawn.</p>
+
+<form id="calc" class="calc" onsubmit="return false">
+ <div class="grid">
+  <label>Child's age today <input type="number" id="age" min="0" max="17" value="0"></label>
+  <label>Annual family contribution ($) <input type="number" id="fam" min="0" max="5000" step="50" value="1000"></label>
+  <label>Annual employer contribution ($, max 2,500) <input type="number" id="emp" min="0" max="2500" step="50" value="0"></label>
+  <label>Expected annual return (%) <input type="number" id="ret" min="-5" max="15" step="0.5" value="7"></label>
+  <label>Fund expense ratio (%, legal max 0.10) <input type="number" id="fee" min="0" max="0.1" step="0.01" value="0.03"></label>
+  <label>Project to age <input type="number" id="to" min="18" max="65" value="18"></label>
+  <label>Your expected tax rate when withdrawn (%) <input type="number" id="tax" min="0" max="50" step="1" value="12"></label>
+  <label>Inflation for "today's dollars" (%) <input type="number" id="inf" min="0" max="10" step="0.5" value="2.5"></label>
+ </div>
+ <label class="chk"><input type="checkbox" id="seed" checked> Gets the $1,000 Treasury seed (U.S. citizen born 2025–2028, election made)</label>
+ <label class="chk"><input type="checkbox" id="dell"> Got the Dell $250 deposit (born 2016–2024, qualifying ZIP)</label>
+ <label class="chk"><input type="checkbox" id="pen" checked> Apply 10% early-withdrawal penalty if withdrawn before 59½ (education/first-home exceptions may apply)</label>
+</form>
+<div id="out" class="out" aria-live="polite"></div>
+<details><summary>Year-by-year table</summary><div id="yy"></div></details>
+<script src="/assets/calc.js" defer></script>
+
+<h2>How the calculation works</h2>
+<p>Each year until the child turns 18: <code>balance = (balance + family + employer) × (1 + return − fee)</code>. From 18 onward no new Trump Account contributions are modeled and the balance compounds alone. The starting balance includes the $1,000 Treasury seed and/or the Dell $250 deposit if ticked.</p>
+<p><strong>After-tax estimate.</strong> A Trump Account becomes a traditional-IRA-style account. Family contributions are after-tax money and create <em>basis</em>, which is not taxed again. The seed, the Dell gift, employer money and all growth are taxed as ordinary income when withdrawn. The calculator applies your chosen tax rate to that taxable part and, if ticked, a 10% penalty for withdrawals before 59½. This is a simplification; real taxes depend on the year, state and exceptions.</p>
+<h2>Example: newborn, $1,000 a year, 7% return</h2>
+<table><thead><tr><th>Age</th><th>Contribution that year</th><th>Balance</th></tr></thead><tbody><tr><td>1</td><td>$1,000</td><td>$2,139</td></tr><tr><td>5</td><td>$1,000</td><td>$7,548</td></tr><tr><td>10</td><td>$1,000</td><td>$16,720</td></tr><tr><td>15</td><td>$1,000</td><td>$29,566</td></tr><tr><td>18</td><td>$1,000</td><td>$39,627</td></tr></tbody></table>
+<p class=small>Seed included. Total contributed by 18: $19,000; balance $39,627; of which your after-tax basis is $18,000.</p>
+<h2>Scenarios</h2><table><thead><tr><th>Family adds</th><th>Total put in by 18</th><th>Value at 18</th><th>Value at 30 (no more deposits)</th></tr></thead><tbody><tr><td>Seed only</td><td>$1,000</td><td>$3,363</td><td>$7,548</td></tr><tr><td>$600/yr</td><td>$11,800</td><td>$25,121</td><td>$56,388</td></tr><tr><td>$1,200/yr</td><td>$22,600</td><td>$46,880</td><td>$105,228</td></tr><tr><td>$2,500/yr</td><td>$46,000</td><td>$94,023</td><td>$211,047</td></tr><tr><td>$5,000/yr</td><td>$91,000</td><td>$184,684</td><td>$414,546</td></tr></tbody></table><p class=small>Assumes a newborn who gets the $1,000 Treasury seed, deposits at the start of each year until age 17, a 7% annual return before a 0.03% fund fee, no withdrawals, nominal dollars (not inflation-adjusted), and the $5,000 limit held flat. Returns are not guaranteed; stock index funds can lose money in any year.</p>
+<section id="faq"><h2>Frequently asked questions</h2><h3>Does the calculator include the $1,000 seed?</h3><p>Yes, if you tick the seed box. Only U.S. citizens born January 1, 2025 through December 31, 2028 qualify, and a parent must elect it on Form 4547.</p><h3>What return should I use?</h3><p>There is no guaranteed return. Broad U.S. stock indexes have historically averaged roughly 10% nominal per year over long periods, with large losses in some years. Many planners use 5–7% to be conservative.</p><h3>Is the Trump Account tax-free?</h3><p>No. It is tax-deferred, not tax-free. Growth is taxed as ordinary income when withdrawn (after 18), except the after-tax family contributions (basis).</p></section><section class="sources"><h2>Sources</h2><ul><li><a href="https://www.irs.gov/instructions/i4547" rel="noopener">IRS: Instructions for Form 4547</a></li><li><a href="https://uscode.house.gov/us/usc/119-124/t26/s530A/" rel="noopener">26 U.S.C. § 530A (statute text)</a></li><li><a href="https://www.irs.gov/newsroom/treasury-irs-issue-guidance-on-trump-accounts-established-under-the-working-families-tax-cuts-notice-announces-upcoming-regulations" rel="noopener">IRS/Treasury guidance news release</a></li></ul></section>
+<div class="ad-slot" data-ad-slot="bottom" aria-hidden="true"></div>
+</main>
+<footer><p><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy</a> · <a href="/disclaimer/">Disclaimer</a> · <a href="/sitemap.xml">Sitemap</a> · <a href="/llms.txt">llms.txt</a></p>
+<p>KidAccountMath is an independent educational site. It is not affiliated with the IRS, the U.S. Treasury, trumpaccounts.gov, BNY, Robinhood or any government agency. Figures are illustrations, not guarantees or advice.</p></footer>
+</body></html>
