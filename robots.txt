@@ -56,3 +56,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://j6-cloude.github.io/sitemap.xml
+Sitemap: https://j6-cloude.github.io/heat-pump-savings/sitemap.xml
