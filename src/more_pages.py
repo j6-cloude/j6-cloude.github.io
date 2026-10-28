@@ -388,7 +388,7 @@ ap = f"""
 <li>Tablets may work but are not officially supported.</li>
 <li>Only the responsible party can log in. There is no shared login yet.</li>
 <li>One login can manage several children: use <em>Add child</em> in the account switcher.</li>
-<li>For help, use the support pages in the app or at trumpaccount.com (linked from IRS.gov).</li></ul>
+<li>Help line: 866-USA-4547 (866-872-4547), as listed on <a href="https://www.irs.gov/trumpaccounts" rel="noopener">IRS.gov/trumpaccounts</a>. Or use the support pages in the app.</li></ul>
 """
 page("/trump-account-app-problems/", "Trump Account App Problems: Can't Verify Identity, Login and 'Unable to Process' Fixes",
      "Fix common Trump Account app problems: identity verification fails, child ineligible or already claimed, processing status, login and bank transfer errors.",
