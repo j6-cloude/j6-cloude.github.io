@@ -11,8 +11,8 @@ SITE = "KidAccountMath"
 TAGLINE = "Free Trump Account (Section 530A) calculators and plain-English guides"
 AUTHOR = os.environ.get("AUTHOR_NAME", "j6")
 CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "liu04731@gmail.com")
-UPDATED = "2026-10-27"
-UPDATED_H = "October 27, 2026"
+UPDATED = "2026-10-28"
+UPDATED_H = "October 28, 2026"
 # Search-engine verification: set env vars (just the content= value) and rebuild
 GOOGLE_VERIFY = os.environ.get("GOOGLE_SITE_VERIFICATION", "")
 BING_VERIFY = os.environ.get("BING_SITE_VERIFICATION", "")
@@ -242,6 +242,17 @@ home_body = f"""
 <li><a href="/trump-account-vs-529/">Trump Account vs 529 plan</a>: which to fund first.</li>
 <li><a href="/trump-account-vs-custodial-roth-ira/">Trump Account vs custodial Roth IRA vs UTMA</a>.</li>
 <li><a href="/trump-account-rules/">Trump Account rules 2026</a>: limits, investments, withdrawals, taxes.</li>
+<li><a href="/trump-account-pros-and-cons/">Trump Account pros and cons</a>: what's the catch?</li>
+<li><a href="/trump-account-withdrawal-rules/">What happens at 18</a>: withdrawal tax calculator.</li>
+<li><a href="/trump-account-taxes/">Trump Account taxes</a>: what is taxed, and tax forms.</li>
+<li><a href="/trump-account-grandparents/">Can grandparents contribute?</a> Limits and gift tax.</li>
+<li><a href="/trump-account-employer-contributions/">Employer contributions</a>: the $2,500 rules and which companies give.</li>
+<li><a href="/trump-account-investment-options/">What is it invested in?</a> SPYM, fees and real history.</li>
+<li><a href="/trump-account-older-kids/">Older kids (born 2009–2024)</a>: what they get.</li>
+<li><a href="/trump-account-fafsa/">Trump Accounts and FAFSA</a>: will it cut college aid?</li>
+<li><a href="/trump-account-rollover/">Rollovers</a>: Roth IRA, ABLE, 529 and switching providers.</li>
+<li><a href="/trump-account-app-problems/">App problems</a>: identity checks, "unable to process" and more.</li>
+<li><a href="/trump-account-deadlines/">Deadlines and key dates</a>: is there a deadline to claim?</li>
 </ul>
 """
 page("/", "Trump Account Calculator 2026 – Seed, $5,000 Limit & After-Tax Value", 
@@ -471,6 +482,8 @@ page("/trump-account-rules/", "Trump Account Rules 2026: Limits, Investments, Wi
            ("What happens at 18?", "The account generally becomes subject to traditional IRA rules and belongs to the child.")],
      sources=[USC, I4547, IRSNEWS, IRSFAQ, DELL])
 
+exec((ROOT / "src" / "more_pages.py").read_text())
+
 # trust pages
 page("/about/", f"About {SITE}", f"Who runs {SITE}, how the calculators work, and how we source Trump Account information.",
      f"""<p>{SITE} publishes free calculators and plain-English explanations of Trump Accounts (Internal Revenue Code § 530A). Every rule we state links to a primary source: the IRS, the statute, Treasury/IRS guidance or the program operators.</p>
@@ -491,6 +504,7 @@ page("/disclaimer/", "Disclaimer", "Educational information only; not tax, legal
 A = OUT / "assets"; A.mkdir(parents=True, exist_ok=True)
 shutil.copy(ROOT / "src" / "style.css", A / "style.css")
 shutil.copy(ROOT / "src" / "calc.js", A / "calc.js")
+shutil.copy(ROOT / "src" / "w18.js", A / "w18.js")
 shutil.copy(ROOT / "src" / "elig.js", A / "elig.js")
 shutil.copy(ROOT / "src" / "quick.js", A / "quick.js")
 shutil.copy(ROOT / "src" / "share.js", A / "share.js")
