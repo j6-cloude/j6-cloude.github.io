@@ -1,12 +1,12 @@
 # KidAccountMath
 
-> Free Trump Account (Section 530A) calculators and plain-English guides. Independent, free, no sign-up. Every rule links to IRS/Treasury primary sources. Last updated 2026-10-27.
+> Free Trump Account (Section 530A) calculators and plain-English guides. Independent, free, no sign-up. Every rule links to IRS/Treasury primary sources. Last updated 2026-10-28.
 
 Author: j6 (https://j6-cloude.github.io/about/). Contact: liu04731@gmail.com. Not affiliated with the IRS or Treasury.
 
 Key facts: A Trump Account is an investing account for a U.S. child. A 2025 law created it (tax code section 530A). It works like a traditional IRA (a retirement account with tax rules) for a child under 18. Family and others can add up to $5,000 a year. Employers can give up to $2,500 of that. The money goes into low-cost U.S. stock index funds, with fees of 0.10% or less. In general, no one can take money out until the year the child turns 18. Children born 2025 to 2028 who are U.S. citizens can get a one-time $1,000 from the Treasury.
 
-Dell $250: The Dell $250 went to eligible children born Jan 1, 2016 – Dec 31, 2024 living in ZIP codes with a median family income of $117,300 or less (U.S. Census 2020–2024 ACS), plus all eligible children on military bases; all deposits were made by October 9, 2026. It was automatic. Some children in higher-income ZIPs also got it because their families enrolled before auto-enrollment began; funds are reserved for children in foster care, expected next year. Source: https://investamerica.org/check-dell-250-eligibility/ (figures as of Oct 9, 2026; verified October 27, 2026).
+Dell $250: The Dell $250 went to eligible children born Jan 1, 2016 – Dec 31, 2024 living in ZIP codes with a median family income of $117,300 or less (U.S. Census 2020–2024 ACS), plus all eligible children on military bases; all deposits were made by October 9, 2026. It was automatic. Some children in higher-income ZIPs also got it because their families enrolled before auto-enrollment began; funds are reserved for children in foster care, expected next year. Source: https://investamerica.org/check-dell-250-eligibility/ (figures as of Oct 9, 2026; verified October 28, 2026).
 
 ## Tools and guides
 
@@ -19,6 +19,17 @@ Dell $250: The Dell $250 went to eligible children born Jan 1, 2016 – Dec 31, 
 - [IRS Notice CP318 / Form 4547 Rejected: What It Means and How to Fix It](https://j6-cloude.github.io/form-4547-cp318-notice/): Got IRS Notice CP318 or 'unable to process' on Form 4547 for a Trump Account? Common causes, fixes, and what not to do.
 - [How Do I Know If My Child Has a Trump Account? (Auto-Enrollment 2026)](https://j6-cloude.github.io/does-my-child-have-a-trump-account/): Check whether your child was auto-enrolled in a Trump Account, how to claim it, and whether the Trump Accounts app is legit.
 - [Trump Account Rules 2026: Limits, Investments, Withdrawals and Taxes](https://j6-cloude.github.io/trump-account-rules/): Every Trump Account rule in one table: $5,000 limit, $2,500 employer cap, $1,000 seed, eligible index funds, withdrawal age and taxation.
+- [Trump Account Withdrawal Rules: What Happens at 18 (Tax Calculator)](https://j6-cloude.github.io/trump-account-withdrawal-rules/): When can money come out of a Trump Account, who controls it at 18, how withdrawals are taxed, and which uses skip the 10% penalty. Free calculator.
+- [Are Trump Accounts Tax-Free? Deductions, Taxable Money and Tax Forms (2026)](https://j6-cloude.github.io/trump-account-taxes/): Trump Account taxes explained: no deduction, no yearly tax, what is taxed at withdrawal, basis, and Forms 5498-TA, 1099-R and 4547.
+- [Trump Account Rollover: Roth IRA, ABLE, 529 and Switching Providers](https://j6-cloude.github.io/trump-account-rollover/): Can a Trump Account be rolled over to a Roth IRA, IRA, ABLE account or 529? The rules before and after 18, plus a Roth conversion tax table.
+- [Can Grandparents Contribute to a Trump Account? How-To, Limits and Gift Tax](https://j6-cloude.github.io/trump-account-grandparents/): How grandparents and relatives add money to a Trump Account (link or QR code), the shared $5,000 limit, gift tax rules, and what a monthly gift could grow to.
+- [Trump Account Employer Contributions: $2,500 Rules and Companies Offering Them](https://j6-cloude.github.io/trump-account-employer-contributions/): How employer Trump Account contributions work: $2,500 per employee, taxes, cafeteria-plan pre-tax option, and companies like Visa, State Street and Vanguard.
+- [Does a Trump Account Affect FAFSA and Financial Aid? (2026)](https://j6-cloude.github.io/trump-account-fafsa/): Will a Trump Account reduce college financial aid? What FAFSA rules say about IRAs, the 20% student-asset worst case, and what to do now.
+- [What Is a Trump Account Invested In? SPYM, Fees and Historical Returns](https://j6-cloude.github.io/trump-account-investment-options/): Trump Account investment options: the SPYM S&P 500 fund, fees, the legal rules, SIPC, and Treasury's historical data on what $1,000 grew to by 18.
+- [Trump Accounts for Older Kids (Born 2009–2024): What They Get and Is It Worth It?](https://j6-cloude.github.io/trump-account-older-kids/): Older kids can have a Trump Account but no $1,000. What children born 2009–2024 get, how long you can contribute, and Treasury data on late starts.
+- [Trump Account Pros and Cons: What's the Catch? (2026)](https://j6-cloude.github.io/trump-account-pros-and-cons/): Honest Trump Account pros and cons: the free $1,000, no fees and tax deferral vs the lock until 18, taxes on withdrawal, child control at 18 and FAFSA risk.
+- [Trump Account App Problems: Can't Verify Identity, Login and 'Unable to Process' Fixes](https://j6-cloude.github.io/trump-account-app-problems/): Fix common Trump Account app problems: identity verification fails, child ineligible or already claimed, processing status, login and bank transfer errors.
+- [Trump Account Deadlines and Key Dates (2025–2029): Is There a Deadline to Claim?](https://j6-cloude.github.io/trump-account-deadlines/): Is there a deadline to claim a Trump Account or the $1,000? All the real cut-off dates by age, plus the full program timeline from 2025 to 2029.
 
 ## About
 
