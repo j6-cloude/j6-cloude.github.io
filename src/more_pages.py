@@ -10,6 +10,7 @@ HC_4547 = ("Trump Accounts Help Center: complete the claim form (Form 4547) and 
 HC_CLOSE = ("Trump Accounts Help Center: how to close or transfer an account", "https://trumpaccount.com/us/en/support/articles/account-closure/")
 N2568 = ("IRS Notice 2025-68 (Trump account guidance)", "https://www.irs.gov/pub/irs-drop/n-25-68.pdf")
 TREGS = ("Federal Register: Trump Accounts temporary regulations (Sept 30, 2026)", "https://www.federalregister.gov/documents/2026/09/30/2026-20026/trump-accounts")
+P590B = ("IRS Publication 590-B: IRA distributions (higher education and first-home exceptions)", "https://www.irs.gov/publications/p590b")
 TC557 = ("IRS Topic 557: 10% additional tax on early IRA distributions (exceptions)", "https://www.irs.gov/taxtopics/tc557")
 RP2625 = ("IRS Rev. Proc. 2026-25: gift tax safe harbor for Trump account contributions", "https://www.irs.gov/pub/irs-drop/rp-26-25.pdf")
 RP2625N = ("IRS news release: safe harbor for certain Trump account contributions", "https://www.irs.gov/newsroom/treasury-irs-provide-safe-harbor-for-certain-contributions-to-trump-accounts-under-the-working-families-tax-cuts")
@@ -53,7 +54,16 @@ W18_FORM = """
   <label for="wtake">Amount to take out ($) <input type="number" inputmode="numeric" id="wtake" min="0" step="100" value="5000"></label>
   <label for="wtax">Child's income tax rate (%) <input type="number" inputmode="numeric" id="wtax" min="0" max="50" step="1" value="10"></label>
  </div>
- <label class="chk"><input type="checkbox" id="wex"> Used for college costs or a first home (up to $10,000) or another IRS exception</label>
+ <div class="grid">
+  <label for="wuse">What is the money for? <select id="wuse">
+   <option value="none" selected>Anything else (rent, a car, savings)</option>
+   <option value="edu">College costs (qualified higher education)</option>
+   <option value="home">Buying a first home</option>
+   <option value="other">Another IRS exception that covers all of it</option>
+  </select></label>
+  <label for="wedu" id="wedubox" hidden>Qualified college costs this year ($) <input type="number" inputmode="numeric" id="wedu" min="0" step="100" value="0"></label>
+  <label for="whome" id="whomebox" hidden>First-home exception already used from any IRA ($) <input type="number" inputmode="numeric" id="whome" min="0" max="10000" step="100" value="0"></label>
+ </div>
  <label class="chk"><input type="checkbox" id="wage"> Child is 59½ or older</label>
  <div id="wout" class="out" aria-live="polite"><noscript>The calculator needs JavaScript. See the worked example below.</noscript></div>
 </form>
@@ -72,7 +82,7 @@ wr = f"""
 <h2>Worked example</h2>
 <p>Say the account holds {money(ex_bal)} at 18. Family put in {money(ex_bas)} of their own (already-taxed) money. Your child takes out {money(ex_take)} for rent, at a 10% tax rate.</p>
 {table([("Tax-free part (" + f"{ex_bas/ex_bal:.0%}" + " of the account is family money)", money(ex_free)), ("Taxable part", money(ex_taxable)), ("Income tax at 10%", money(ex_taxable*0.10)), ("10% extra tax (rent is not an exception)", money(ex_taxable*0.10)), ("Kept", money(ex_take - ex_taxable*0.2))], ["", "Amount"])}
-<p class=small>If the same {money(ex_take)} paid for college, the 10% extra tax would not apply and your child would keep {money(ex_take - ex_taxable*0.1)}. The tax-free share follows the IRA pro-rata rule. A Trump Account is never combined with your child's other IRAs for this rule (Notice 2025-68).</p>
+<p class=small>If the same {money(ex_take)} paid for at least {money(ex_take)} of qualified college costs, the 10% extra tax would not apply and your child would keep {money(ex_take - ex_taxable*0.1)}. The exception only covers what is actually spent: with $3,000 of college costs, the other $2,000 still owes the 10% on its taxable part. The tax-free share follows the IRA pro-rata rule. A Trump Account is never combined with your child's other IRAs for this rule (Notice 2025-68).</p>
 <h2>What can come out before 18?</h2>
 <p>Almost nothing. During the growth period the law allows only these moves:</p>
 <ul><li>A rollover of the <em>whole</em> balance to another Trump Account provider (trustee to trustee).</li>
@@ -81,7 +91,10 @@ wr = f"""
 <li>Payment after the child's death.</li></ul>
 <p>There is no hardship or emergency withdrawal before 18, unlike some other IRAs.</p>
 <h2>Which uses skip the 10% extra tax after 18?</h2>
-<p>The usual IRA exceptions apply. Common ones: qualified higher-education costs, up to $10,000 (lifetime) for a first home, and a few more listed by the IRS in Topic 557. Income tax still applies to the taxable part. See the full list at the IRS link below.</p>
+<p>The usual IRA exceptions apply (IRS Topic 557). The two most families ask about work differently:</p>
+<ul><li><strong>College:</strong> no dollar cap, but only up to the qualified higher-education costs paid that year (tuition, fees, books, supplies and required equipment), minus costs paid with tax-free scholarships, Pell grants or other tax-free aid.</li>
+<li><strong>First home:</strong> up to $10,000 for life, counting every earlier first-home withdrawal from any IRA. The money must pay qualified buying costs within 120 days. Take $25,000 for a first home with no family money in it, and $10,000 skips the 10% but the other $15,000 still owes it ($1,500).</li></ul>
+<p>Only the covered part avoids the 10%. Income tax still applies to the taxable part either way. See the full list at the IRS link below.</p>
 <h2>What happens if my child leaves it alone?</h2>
 <p>It keeps growing tax-deferred, like any IRA. After 18 your child can add more only under normal IRA rules, which need earned income (a job).</p>
 """
@@ -94,7 +107,7 @@ page("/trump-account-withdrawal-rules/", "Trump Account Withdrawal Rules: What H
            ("Is there a penalty for withdrawing from a Trump Account?", "After 18, the taxable part of a withdrawal before age 59½ generally owes a 10% additional tax unless an IRS exception applies, such as qualified higher-education costs or up to $10,000 for a first home. Income tax applies to the taxable part either way."),
            ("Can you contribute to a Trump Account after 18?", "Not as a Trump Account. Contributions stop after December 31 of the year the child turns 17. After the account becomes a traditional IRA, the child can add money only under normal IRA rules, which require earned income."),
            ("What happens if nobody claims the account?", "It stays invested. At 18 it converts to a traditional IRA in the child's name and the child verifies their identity to take control.")],
-     sources=[HC_OV, HC_CF, HC_CLAIM, N2568, TREGS, TC557, USC])
+     sources=[HC_OV, HC_CF, HC_CLAIM, N2568, TREGS, TC557, P590B, USC])
 
 # 2. Taxes
 tx_rows = []
