@@ -88,6 +88,7 @@ def page(path, title, desc, body, ld=None, faqs=None, h1=None, sources=None, her
     doc = f"""<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="{url}">
@@ -384,7 +385,7 @@ howto = """
 <li><strong>Ask for the $1,000</strong> (U.S. citizen born 2025–2028): send Form 4547 and pick the pilot program contribution. You can do this in the app, on the website, or in your IRS Online Account.</li>
 <li><strong>Optional:</strong> add money (up to $5,000 a year), and ask your employer if it adds money too.</li>
 </ol>
-<p>Who runs it: Treasury picked BNY as financial agent. Robinhood Securities is the broker and first trustee (per the IRS FAQ). Help line: 866-USA-4547.</p>
+<p>Who runs it: Treasury picked BNY as financial agent. Robinhood Securities is the broker and first trustee (per the IRS FAQ). Help line: 866-USA-4547 (866-872-4547), as listed on <a href="https://www.irs.gov/trumpaccounts" rel="noopener">IRS.gov/trumpaccounts</a>.</p>
 <p>Got a rejection? See <a href="/form-4547-cp318-notice/">Form 4547 / CP318 fixes</a>.</p>
 """
 howto = howto.replace("</ol>\n<p>Who runs it", "</ol>\n" + SHARE_CLAIM + "\n<p>Who runs it", 1)
@@ -416,7 +417,7 @@ cp = """
 </tbody></table>
 <h2>What not to do</h2>
 <ul><li>Don't file an amended return (1040-X) to fix Form 4547 — the IRS says not to.</li>
-<li>Don't expect IRS phone agents to correct the election; the IRS says they cannot. For account changes after claiming, the program line is 866-USA-4547.</li>
+<li>Don't expect IRS phone agents to correct the election; the IRS says they cannot. For account changes after claiming, the program line is 866-USA-4547 (866-872-4547), as listed on <a href="https://www.irs.gov/trumpaccounts" rel="noopener">IRS.gov/trumpaccounts</a>.</li>
 <li>Don't give SSNs to anyone who contacts you first by text or phone.</li></ul>
 """
 page("/form-4547-cp318-notice/", "IRS Notice CP318 / Form 4547 Rejected: What It Means and How to Fix It",
@@ -439,7 +440,7 @@ chk = """
 <p>The IRS's own Trump Accounts page tells parents to download the Trump Accounts app from the Apple App Store or Google Play to claim an account, and its FAQ names BNY as Treasury's financial agent and Robinhood Securities as brokerage provider and initial trustee. So the official app is real — but scammers imitate it. Safe habits:</p>
 <ul><li>Start from irs.gov/trumpaccounts or trumpaccounts.gov, not from a text, email or ad link.</li>
 <li>No one from the program needs you to pay a fee to receive the $1,000 or $250.</li>
-<li>Don't give an SSN to anyone who contacts you first. The official help line is 866-USA-4547 (866-872-4547).</li></ul>
+<li>Don't give an SSN to anyone who contacts you first. The official help line is 866-USA-4547 (866-872-4547), as listed on <a href="https://www.irs.gov/trumpaccounts" rel="noopener">IRS.gov/trumpaccounts</a>.</li></ul>
 """
 page("/does-my-child-have-a-trump-account/", "How Do I Know If My Child Has a Trump Account? (Auto-Enrollment 2026)",
      "Check whether your child was auto-enrolled in a Trump Account, how to claim it, and whether the Trump Accounts app is legit.",
